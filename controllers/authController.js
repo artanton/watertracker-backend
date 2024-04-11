@@ -60,26 +60,9 @@ const logout = async (req, res) => {
   res.json({ message: "Logout success" });
 };
 
-const updateSub = async (req, res) => {
-  const { subscription } = req.body;
-  const userId = req.user._id;
-  const result = await User.findByIdAndUpdate(
-    userId,
-    { subscription },
-    { new: true }
-  );
-  console.log(result);
-  if (!result) {
-    throw HttpError(404);
-  }
-
-  res.json(result);
-};
-
 export default {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
-  updateSub: ctrlWrapper(updateSub),
 };
