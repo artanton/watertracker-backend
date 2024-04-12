@@ -14,10 +14,15 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      minLength: 6,
+      minLength: 8,
+      maxLength: 64,
       required: [true, "Password is required"],
     },
     token: {
+      type: String,
+      default: null,
+    },
+    avatarURL: {
       type: String,
       default: null,
     },
@@ -26,6 +31,10 @@ const userSchema = new Schema(
 );
 
 userSchema.post("save", handleMongooseError);
+
+export const avatarSchema = Joi.object({
+  avatarURL: Joi.string().uri(),
+});
 
 export const registerSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),

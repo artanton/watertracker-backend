@@ -1,9 +1,11 @@
-import { User } from "../models/user.js";
+import fs from "fs/promises"; //!avatar
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
+import { User } from "../models/user.js";
 import HttpError from "../helpers/HttpError.js";
+import cloudinary from "../helpers/cloudinary.js"; //!avatar
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 
 dotenv.config();
@@ -60,9 +62,27 @@ const logout = async (req, res) => {
   res.json({ message: "Logout success" });
 };
 
+//!avatar
+const addAvatar = async (req, res) => {
+  const { _id: owner } = req.user;
+  console.log(req.file.path);
+  const { url: avatarURL } = await cloudinary.uploader.upload(req.file.path, {
+    folder: "avatars",
+  });
+  await fs.unlink(req.file.path);
+  const result = await User.findByIdAndUpdate(
+    owner,
+    { avatarURL },
+    { new: true }
+  );
+
+  res.status(201).json(result);
+};
+
 export default {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
+  addAvatar: ctrlWrapper(addAvatar),
 };
