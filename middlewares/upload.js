@@ -1,30 +1,31 @@
 import multer from "multer";
-import path from "path";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../helpers/cloudinary.js";
 
-import HttpError from "../helpers/HttpError.js";
-
-const destination = path.resolve("temp");
-const storage = multer.diskStorage({
-  destination,
-  filename: (req, file, callback) => {
-    const uniquePrefix = `${Date.now()}-${Math.floor(Math.random() * 1e9)}`;
-    const fileName = `${uniquePrefix}_${file.originalname}`;
-    callback(null, fileName);
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    // Determine the folder based on file properties or request data
+    let folder;
+    if (file.fieldname === "avatarURL") {
+      folder = "avatars";
+    } else if (file.fieldname === "documents") {
+      folder = "documents";
+    } else {
+      folder = "misc";
+    }
+    return {
+      folder,
+      allowed_formats: ["jpg", "png", "webp", "jpeg"], // Adjust the allowed formats as needed
+      public_id: req.user._id, // Use original filename as the public ID
+      transformation: [
+        { width: 350, height: 350 },
+        { width: 700, height: 700 },
+      ],
+    };
   },
 });
 
-const limits = {
-  fileSize: 5 * 1024 * 1024,
-};
-
-const fileFilter = (req, file, callback) => {
-  const extension = file.originalname.split(".").pop();
-  if (extension === "exe") {
-    callback(HttpError(400, ".exe files are not allowed"));
-  }
-  callback(null, true);
-};
-
-const upload = multer({ storage, limits, fileFilter });
+const upload = multer({ storage });
 
 export default upload;
