@@ -6,16 +6,19 @@ import dotenv from "dotenv";
 
 import waterRouter from "./routes/waterRouter.js";
 import authRouter from "./routes/authRouter.js";
+import userSettingsRouter from "./routes/userSettingsRouter.js";
 dotenv.config();
 export const app = express();
 
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public")); //!avatar
 
 app.use("/api/auth", authRouter);
+
 app.use("/api/water", waterRouter);
+
+app.use("/api/updateProfile", userSettingsRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
