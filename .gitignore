@@ -7,3 +7,4 @@ config.js
 readme.txt
 .env
 .env.local
+pullrequests-list.txt
