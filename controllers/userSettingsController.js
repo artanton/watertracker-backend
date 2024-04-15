@@ -8,40 +8,20 @@ const updateUserSettings = async (req, res) => {
   const { _id } = req.user;
   const { email, userName, gender, dailyNorm, oldPassword, newPassword } =
     req.body;
-  if (oldPassword & newPassword & (oldPassword === newPassword)) {
-    throw HttpError(400, "New password cannot be the same as old password");
-  }
   const newData = {};
-  if (email !== undefined) {
-    if (email === req.user.email) {
-      throw HttpError(400, "New email cannot be the same as old email");
-    }
+  userName && (newData.userName = userName);
+  gender && (newData.gender = gender);
+  dailyNorm && (newData.dailyNorm = dailyNorm);
+  req.file?.path && (newData.avatarURL = req.file.path);
+  if (email) {
     const isTakenEmail = await User.findOne({ email });
     if (isTakenEmail) {
       throw HttpError(409, "Email already in use");
     }
     newData.email = email;
   }
-  if (userName !== undefined) {
-    newData.userName = userName;
-  }
-  if (gender !== undefined) {
-    newData.gender = gender;
-  }
-  if (dailyNorm !== undefined) {
-    newData.dailyNorm = dailyNorm;
-  }
-  if (req.file && req.file.path) {
-    newData.avatarURL = req.file.path;
-  }
-  if (oldPassword & newPassword) {
-    const passwordCompare = await bcrypt.compare(
-      oldPassword,
-      req.user.password
-    );
-    if (!passwordCompare) {
-      throw HttpError(400, "Old password is wrong");
-    }
+
+  if (oldPassword && newPassword) {
     const newHashPassword = await bcrypt.hash(newPassword, 10);
     newData.password = newHashPassword;
   }
