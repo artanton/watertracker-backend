@@ -26,6 +26,13 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+
+    dalyNorma: {
+      type: Number,
+      min: 0,
+      max: 15000,
+      default: 2000,
+    },
   },
   { versionKey: false, timestamps: true }
 );

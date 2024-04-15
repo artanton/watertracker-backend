@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
+import waterRouter from "./routes/waterRouter.js";
 import authRouter from "./routes/authRouter.js";
 dotenv.config();
 export const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.static("public")); //!avatar
 
 app.use("/api/auth", authRouter);
+app.use("/api/water", waterRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
