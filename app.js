@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
+import waterRouter from "./routes/waterRouter.js";
 import authRouter from "./routes/authRouter.js";
 import userSettingsRouter from "./routes/userSettingsRouter.js";
 dotenv.config();
@@ -14,6 +15,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
+
+app.use("/api/water", waterRouter);
+
 app.use("/api/updateProfile", userSettingsRouter);
 
 app.use((_, res) => {
