@@ -6,12 +6,12 @@ import ctrlWrapper from "../decorators/ctrlWrapper.js";
 
 const updateUserSettings = async (req, res) => {
   const { _id } = req.user;
-  const { email, userName, gender, dailyNorm, oldPassword, newPassword } =
+  const { email, userName, gender, dailyNorma, oldPassword, newPassword } =
     req.body;
   const newData = {};
   userName && (newData.userName = userName);
   gender && (newData.gender = gender);
-  dailyNorm && (newData.dailyNorm = dailyNorm);
+  dailyNorma && (newData.dailyNorma = dailyNorma);
   req.file?.path && (newData.avatarURL = req.file.path);
   if (email) {
     const isTakenEmail = await User.findOne({ email });

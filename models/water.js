@@ -13,7 +13,7 @@ const waterSchema = new Schema(
       ref: "user",
       required: true,
     },
-    dalyNorma: {
+    dailyNorma: {
       type: Number,
       min: 50,
       max: 15000,
