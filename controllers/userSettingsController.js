@@ -15,8 +15,8 @@ const updateUserSettings = async (req, res) => {
   req.file?.path && (newData.avatarURL = req.file.path);
   if (email) {
     const isTakenEmail = await User.findOne({ email });
-    if (isTakenEmail) {
-      throw HttpError(409, "Email already in use");
+    if (isTakenEmail && email !== req.user.email) {
+      throw HttpError(409, "Email is already in use");
     }
     newData.email = email;
   }
