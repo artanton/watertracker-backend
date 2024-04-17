@@ -5,14 +5,20 @@ import {isValidId} from "../middlewares/isValidId.js";
 import { authenticate } from "../middlewares/authenticate.js";
 import { addWaterSchema } from "../schemas/waterSchemas.js";
 
-  const contactsRouter = express.Router();
+  const waterRouter = express.Router();
 
-contactsRouter.use(authenticate);
+waterRouter.use(authenticate);
 
-contactsRouter.post(
+waterRouter.post(
     "/",
     validateBody(addWaterSchema),
     waterController.addWater
   );
 
-  export default contactsRouter;
+  waterRouter.get("/:id", isValidId, waterController.today);
+
+  waterRouter.delete("/:id", isValidId, waterController.deleteWaterDose);
+
+
+
+  export default waterRouter;

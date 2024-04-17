@@ -44,9 +44,9 @@ const userSchema = new Schema(
       },
       default: null,
     },
-    dailyNorm: {
+    dailyNorma: {
       type: Number,
-      min: [0, "Daily norm value cannot be less than 0 ml"],
+      min: [50, "Daily norm value cannot be less than 0 ml"],
       max: [15000, "Daily norm value cannot be more than 15000 ml"],
       default: 2000,
     },
@@ -90,7 +90,7 @@ export const userSettingsSchema = Joi.object({
   gender: Joi.string().valid("Man", "Woman", null).messages({
     "any.only": '"gender" must be either Man or Woman',
   }),
-  dailyNorm: Joi.number().min(0).max(15000).messages({
+  dailyNorma: Joi.number().min(0).max(15000).messages({
     "number.min": "Daily norma must be larger than or equal to 0 ml",
     "number.max": "Daily norma must be less than or equal to 15000 ml",
   }),
