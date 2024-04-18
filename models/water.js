@@ -30,6 +30,12 @@ const waterSchema = new Schema(
       default: 0,
     },
 
+     waterSavings: {
+      type: Number,
+      min: 0, 
+      default: 0,
+     } ,    
+
     dailyWaterInfo: {
       type: [
         {

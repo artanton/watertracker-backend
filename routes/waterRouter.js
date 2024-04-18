@@ -17,7 +17,9 @@ waterRouter.post(
 
   waterRouter.get("/:id", isValidId, waterController.today);
 
-  waterRouter.delete("/:id", isValidId, waterController.deleteWaterDose);
+  waterRouter.delete("/:id", isValidId, waterController.deleteWaterRecord);
+
+  waterRouter.patch("/:id", isValidId, waterController.updateWaterDose);
 
 
 
