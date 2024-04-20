@@ -7,9 +7,9 @@ const addWater = async (req, res) => {
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
   const { date, waterDose } = req.body;
-  const dateWithoutTime = new Date(date).toISOString().substring(0, 10);
+  const actualDate = new Date(date).toISOString();
 
-  const ToDayWaterData = await Water.findOne({ owner, date: dateWithoutTime });
+  const ToDayWaterData = await Water.findOne({ owner, date: actualDate });
 
   if (!ToDayWaterData) {
     const data = {
@@ -20,7 +20,7 @@ const addWater = async (req, res) => {
 
     const result = await Water.create({
       owner,
-      date: dateWithoutTime,
+      date: actualDate,
       waterTotal: waterDose,
       persantRate: waterRate,
       dailyNorma: userDailyNorma,
@@ -65,20 +65,19 @@ const deleteWaterRecord = async (req, res) => {
   const { id } = req.params;
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
-  const dateWithoutTime = new Date().toISOString().substring(0, 10);
-  let ToDayWaterData = await Water.findOne({ owner, date: dateWithoutTime });
+  const actualDate = new Date().toISOString();
+  let ToDayWaterData = await Water.findOne({ owner, date: actualDate });
 
   const waterRecord = ToDayWaterData.dailyWaterInfo.find(
     (option) => option.id === id
   );
-  console.log(waterRecord);
 
   const { waterTotal } = ToDayWaterData;
 
   const deletedWaterDose = waterRecord.waterDose;
 
   ToDayWaterData = await Water.updateOne(
-    { owner, date: dateWithoutTime },
+    { owner, date: actualDate },
     {
       $inc: { waterTotal: -deletedWaterDose, waterSavings: -1 },
       $pull: { dailyWaterInfo: { _id: id } },
@@ -95,48 +94,69 @@ const deleteWaterRecord = async (req, res) => {
 };
 
 const updateWaterDose = async (req, res) => {
-   const { id } = req.params;
+  const { id } = req.params;
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
   const { waterDose: newWaterDose, createdDate } = req.body;
 
-  const dateWithoutTime = new Date(createdDate)
-    .toISOString()
-    .substring(0, 10);
+  const actualDate = new Date(createdDate).toISOString();
 
-  let ToDayWaterData = await Water.findOne({ owner, date: dateWithoutTime });
+  let ToDayWaterData = await Water.findOne({ owner, date: actualDate });
 
   let waterRecord = ToDayWaterData.dailyWaterInfo.find(
-    (option) => option.id===id
+    (option) => option.id === id
   );
-  
 
   const { waterTotal } = ToDayWaterData;
-  
+
   const oldWaterDose = waterRecord.waterDose;
-  const newCreatedDate = new Date (createdDate).toISOString();
-  
-  const waterDoseShift = oldWaterDose-newWaterDose;
-  
-    ToDayWaterData = await Water.findOneAndUpdate(
-     { "dailyWaterInfo._id": id},
-      { 
-        $inc: { waterTotal: -waterDoseShift},
-        $set: {
-          persantRate: Math.round(
-            ((waterTotal - waterDoseShift) / userDailyNorma) * 100
-          ),
-          "dailyWaterInfo.$.waterDose": newWaterDose,
-          "dailyWaterInfo.$.createdDate": newCreatedDate
-        }},
-        
-       
-      { new: true }
-    );
-    waterRecord = ToDayWaterData.dailyWaterInfo.find(
-      (option) => option.id===id
-    );
- 
+  const newCreatedDate = new Date(createdDate).toISOString();
+
+  const waterDoseShift = oldWaterDose - newWaterDose;
+
+  ToDayWaterData = await Water.findOneAndUpdate(
+    { "dailyWaterInfo._id": id },
+    {
+      $inc: { waterTotal: -waterDoseShift },
+      $set: {
+        persantRate: Math.round(
+          ((waterTotal - waterDoseShift) / userDailyNorma) * 100
+        ),
+        "dailyWaterInfo.$.waterDose": newWaterDose,
+        "dailyWaterInfo.$.createdDate": newCreatedDate,
+      },
+    },
+
+    { new: true }
+  );
+  waterRecord = ToDayWaterData.dailyWaterInfo.find(
+    (option) => option.id === id
+  );
+
   res.status(200).json(waterRecord);
+};
+
+const month = async (req, res) => {
+  const { _id: owner } = req.user;
+  const { date } = req.query;
+
+  const searchedDate = new Date(date);
+
+
+  const startOfMonth = new Date(searchedDate.getFullYear(), searchedDate.getMonth(), 2).toISOString();
+const endOfMonth = new Date(searchedDate.getFullYear(), searchedDate.getMonth()+1, 2).toISOString();
+
+
+const rawData = await Water.find({owner, date: { $gte: startOfMonth, $lte: endOfMonth } })
+
+const data= rawData.map(waterByDay=>({
+  _id: waterByDay._id,
+  date: new Date(waterByDay.date).toISOString().substring(0, 10),
+  dailyNorma: waterByDay.dailyNorma,
+  persantRate: waterByDay.persantRate,
+  waterSavings: waterByDay.waterSavings}))
+console.log(data);
+
+res.status(200).json(data)
 };
 
 export default {
@@ -144,4 +164,5 @@ export default {
   today: ctrlWrapper(today),
   deleteWaterRecord: ctrlWrapper(deleteWaterRecord),
   updateWaterDose: ctrlWrapper(updateWaterDose),
+  month: ctrlWrapper(month),
 };

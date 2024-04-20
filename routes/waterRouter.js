@@ -21,6 +21,8 @@ waterRouter.post(
 
   waterRouter.patch("/:id", isValidId, waterController.updateWaterDose);
 
+  waterRouter.get("/",  waterController.month);
+
 
 
   export default waterRouter;
