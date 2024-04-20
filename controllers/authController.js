@@ -19,11 +19,22 @@ const register = async (req, res) => {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const newUser = await User.create({ ...req.body, password: hashPassword });
+  const newUser = await User.create({
+    ...req.body,
+    password: hashPassword,
+    // token,
+  });
+
+  const payload = {
+    id: newUser._id,
+  };
+
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
   console.log(newUser);
   res.status(201).json({
     email: newUser.email,
     name: newUser.name,
+    token,
   });
 };
 

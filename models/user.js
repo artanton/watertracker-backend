@@ -3,7 +3,7 @@ import Joi from "joi";
 import { handleMongooseError } from "../helpers/handleMongooseError.js";
 
 const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
+const userNameRegexp = /^[A-Za-zßäöüÄÖÜéèàáÁÉÈÀÑñ0-9]*$/;
 const userSchema = new Schema(
   {
     email: {
@@ -15,8 +15,8 @@ const userSchema = new Schema(
     userName: {
       type: String,
       match: [
-        /^[a-zA-Z]+$/,
-        "User name can contain only alphabet characters without spaces, punctuation and numbers",
+        userNameRegexp,
+        "User name can contain only alphabet characters and numbers without spaces or punctuation",
       ],
       maxlength: [64, "User name should not exceed 64 characters"],
       default: null,
@@ -81,9 +81,9 @@ export const loginSchema = Joi.object({
 export const userSettingsSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp),
   userName: Joi.string()
-    .regex(/^[a-zA-Z]+$/)
+    .regex(userNameRegexp)
     .message(
-      "User name can contain only alphabet characters without spaces, punctuation and numbers"
+      "User name can contain only alphabet characters and numbers without spaces or punctuation"
     )
     .max(64)
     .message("User name should not exceed 64 characters"),
