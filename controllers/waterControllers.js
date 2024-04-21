@@ -140,23 +140,67 @@ const month = async (req, res) => {
   const { date } = req.query;
 
   const searchedDate = new Date(date);
+  const year = searchedDate.getFullYear();
+  const monthNo = searchedDate.getMonth();
 
+  const startOfMonth = new Date(
+    searchedDate.getFullYear(),
+    searchedDate.getMonth(),
+    2
+  ).toISOString();
+  const endOfMonth = new Date(
+    searchedDate.getFullYear(),
+    searchedDate.getMonth() + 1,
+    2
+  ).toISOString();
 
-  const startOfMonth = new Date(searchedDate.getFullYear(), searchedDate.getMonth(), 2).toISOString();
-const endOfMonth = new Date(searchedDate.getFullYear(), searchedDate.getMonth()+1, 2).toISOString();
+  const rawData = await Water.find({
+    owner,
+    date: { $gte: startOfMonth, $lte: endOfMonth },
+  });
 
+  const daysOfMonth = getDaysOfMonth(year, monthNo);
 
-const rawData = await Water.find({owner, date: { $gte: startOfMonth, $lte: endOfMonth } })
+  const data = daysOfMonth.map((day) => {
+    const dayData = rawData.find((item) => {
+      const itemDate = Number(item.date.toString().slice(8, 10));
 
-const data= rawData.map(waterByDay=>({
-  _id: waterByDay._id,
-  date: new Date(waterByDay.date).toISOString().substring(0, 10),
-  dailyNorma: waterByDay.dailyNorma,
-  persantRate: waterByDay.persantRate,
-  waterSavings: waterByDay.waterSavings}))
-console.log(data);
+      return itemDate === day;
+    });
 
-res.status(200).json(data)
+    const formattedDay = day.toString().padStart(2, "0");
+    const formattedMonth = `${monthNo + 1}`.toString().padStart(2, "0");
+    const date = `${year}-${formattedMonth}-${formattedDay}`;
+
+    if (dayData) {
+      return {
+        _id: dayData._id,
+        date: dayData.date,
+        dailyNorma: dayData.dailyNorma,
+        persantRate: dayData.persantRate,
+        waterSavings: dayData.waterSavings,
+      };
+    } else {
+      return {
+        date: date,
+        dailyNorma: 0,
+        persantRate: 0,
+        waterSavings: 0,
+      };
+    }
+  });
+
+  res.status(200).json(data);
+};
+
+const getDaysOfMonth = (year, month) => {
+  const days = [];
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  for (let day = 1; day <= daysInMonth; day++) {
+    days.push(day);
+  }
+
+  return days;
 };
 
 export default {
