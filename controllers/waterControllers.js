@@ -2,12 +2,13 @@ import { Water } from "../models/water.js";
 import HttpError from "../helpers/HttpError.js";
 
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
+import { getDaysOfMonth } from "../helpers/waterHelper.js";
 
 const addWater = async (req, res) => {
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
   const { date, waterDose } = req.body;
-  const actualDate = new Date(date).toISOString();
+  const actualDate = new Date(date).toISOString().substring(0,10);
 
   const ToDayWaterData = await Water.findOne({ owner, date: actualDate });
 
@@ -65,8 +66,12 @@ const deleteWaterRecord = async (req, res) => {
   const { id } = req.params;
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
-  const actualDate = new Date().toISOString();
+  const actualDate = new Date().toISOString().substring(0,10);
   let ToDayWaterData = await Water.findOne({ owner, date: actualDate });
+  console.log(ToDayWaterData);
+  if(!ToDayWaterData){
+    throw HttpError(404, "Not found");
+  }
 
   const waterRecord = ToDayWaterData.dailyWaterInfo.find(
     (option) => option.id === id
@@ -98,14 +103,19 @@ const updateWaterDose = async (req, res) => {
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
   const { waterDose: newWaterDose, createdDate } = req.body;
 
-  const actualDate = new Date(createdDate).toISOString();
+  const actualDate = new Date(createdDate).toISOString().substring(0,10);
 
   let ToDayWaterData = await Water.findOne({ owner, date: actualDate });
+  if(!ToDayWaterData){
+    throw HttpError(404,"Not Found");
+  }
 
   let waterRecord = ToDayWaterData.dailyWaterInfo.find(
     (option) => option.id === id
   );
-
+if(!waterRecord){
+  throw HttpError(404,"Water dose record Not Found");
+}
   const { waterTotal } = ToDayWaterData;
 
   const oldWaterDose = waterRecord.waterDose;
@@ -158,6 +168,9 @@ const month = async (req, res) => {
     owner,
     date: { $gte: startOfMonth, $lte: endOfMonth },
   });
+  if(!rawData){
+    throw HttpError (404, "Not Found");
+  }
 
   const daysOfMonth = getDaysOfMonth(year, monthNo);
 
@@ -193,15 +206,45 @@ const month = async (req, res) => {
   res.status(200).json(data);
 };
 
-const getDaysOfMonth = (year, month) => {
-  const days = [];
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  for (let day = 1; day <= daysInMonth; day++) {
-    days.push(day);
+const dailyNorm= async (req, res)=>{
+  const { _id: owner } = req.user;
+  const {dailyNorma}=req.body;
+  if(!dailyNorma){
+    throw HttpError(400,"Daily norma has no value!")
   }
 
-  return days;
+  const actualDate = new Date ().toISOString().substring(0,10);
+console.log(actualDate);
+  const toDayWaterData = await Water.findOne({ owner, date: actualDate });
+  console.log(toDayWaterData);
+  
+  if (!toDayWaterData){
+    const result = await Water.create({
+      owner,
+      date: actualDate,
+      waterTotal:0,
+      persantRate: 0,
+      dailyNorma,
+      waterSavings: 0,
+      dailyWaterInfo: [],
+    });
+
+    return res.status(201).json(result);
+  }else{
+    const result= await Water.updateOne(
+      {owner, date: actualDate},
+      {dailyNorma}
+    );
+    return res.json(result);
+  }
+
+
+  
+
+ 
+
 };
+
 
 export default {
   addWater: ctrlWrapper(addWater),
@@ -209,4 +252,5 @@ export default {
   deleteWaterRecord: ctrlWrapper(deleteWaterRecord),
   updateWaterDose: ctrlWrapper(updateWaterDose),
   month: ctrlWrapper(month),
+  dailyNorm: ctrlWrapper(dailyNorm),
 };

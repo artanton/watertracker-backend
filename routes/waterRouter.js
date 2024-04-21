@@ -23,6 +23,8 @@ waterRouter.post(
 
   waterRouter.get("/",  waterController.month);
 
+  waterRouter.patch("/", waterController.dailyNorm);
+
 
 
   export default waterRouter;
