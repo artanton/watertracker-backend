@@ -119,37 +119,27 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "User registration",
+                "summary": "Current user checkout",
                 "parameters": [],
                 "security": [
                     {
                         "Bearer": []
                     }
                 ],
-                "requestBody": {
-                    "description": "Registration's object",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RegistrationRequest"
-                            }
-                        }
-                    }
-                },
+                "requestBody": {},
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                    "$ref": "#/components/schemas/UserCurrentResponse"
                                 }
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad request (invalid request body)",
+                    "401": {
+                        "description": "Unauthorized",
                         "content": {}
                     },
                     "409": {
@@ -171,34 +161,14 @@
                         "Bearer": []
                     }
                 ],
-                "requestBody": {
-                    "description": "Registration's object",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RegistrationRequest"
-                            }
-                        }
-                    }
-                },
+                "requestBody": {},
                 "responses": {
-                    "201": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/RegistrationResponse"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request (invalid request body)",
+                    "200": {
+                        "description": "Successful logout",
                         "content": {}
                     },
-                    "409": {
-                        "description": "Provided email already exists",
+                    "401": {
+                        "description": "Unauthorized",
                         "content": {}
                     }
                 }
@@ -207,9 +177,9 @@
         "/updateProfile/": {
             "post": {
                 "tags": [
-                    ""
+                    "updateProfile"
                 ],
-                "summary": "User registration",
+                "summary": "User update",
                 "parameters": [],
                 "security": [
                     {
@@ -220,11 +190,6 @@
                     "description": "Registration's object",
                     "required": true,
                     "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RegistrationRequest"
-                            }
-                        },
                         "multipart/form-data": {
                             "schema": {
                                 "type": "object",
@@ -234,9 +199,10 @@
                                         "format": "binary",
                                         "description": "Image file to upload"
                                     },
-                                    "userData": {
-                                        "type": "string",
-                                        "description": "User's data in JSON format"
+                                    "application/json": {
+                                        "schema": {
+                                            "$ref": "#/components/schemas/UserUpdateRequest"
+                                        }
                                     }
                                 }
                             }
@@ -249,7 +215,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                    "$ref": "#/components/schemas/UserUpdateResponse"
                                 }
                             }
                         }
@@ -258,8 +224,12 @@
                         "description": "Bad request (invalid request body)",
                         "content": {}
                     },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    },
                     "409": {
-                        "description": "Provided email already exists",
+                        "description": "Email is already in use",
                         "content": {}
                     }
                 }
@@ -427,15 +397,16 @@
                         "Bearer": []
                     }
                 ],
-                "requestBody": { "description": "Water dose object",
-                "required": true,
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "$ref": "#/components/schemas/UpdateWaterRequest"
+                "requestBody": {
+                    "description": "Water dose object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateWaterRequest"
+                            }
                         }
                     }
-                }
                 },
                 "responses": {
                     "200": {
@@ -450,6 +421,10 @@
                     },
                     "400": {
                         "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "content": {}
                     },
                     "404": {
@@ -493,13 +468,16 @@
                             }
                         }
                     },
-                    "400":[ {
-                        "description": "Bad request (invalid request body)",
-                        "content": {}
-                    }
-                   
-                ]
-                   
+                    "400": 
+                        {
+                            "description": "Bad request (invalid request body)",
+                            "content": {}
+                        },
+                        "401": {
+                            "description": "Unauthorized",
+                            "content": {}
+                        }
+                    
                 }
             }
         },
@@ -529,11 +507,14 @@
                         "description": "Delete success",
                         "content": {}
                     },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    },
                     "404": {
                         "description": "Not Found",
                         "content": {}
                     }
-                   
                 }
             }
         }
@@ -577,18 +558,132 @@
                     }
                 }
             },
-
-            "LoginResponse":{
+            "LoginResponse": {
                 "type": "object",
                 "properties": {
-                  "token": {
-                    "type": "string",
-                    "description": "JWT token generated upon successful authentication."
-                  }
-                }  
+                    "token": {
+                        "type": "string",
+                        "description": "JWT token generated upon successful authentication."
+                    }
+                }
             },
-
-
+            "UserCurrentResponse": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the user."
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "Email address of the user."
+                    },
+                    "token": {
+                        "type": "string",
+                        "description": "JWT token generated upon successful authentication."
+                    },
+                    "userName": {
+                        "type": "string",
+                        "description": "Username of the user."
+                    },
+                    "avatarURL": {
+                        "type": "string",
+                        "format": "url",
+                        "description": "URL of the user's avatar."
+                    },
+                    "gender": {
+                        "type": "string",
+                        "enum": [
+                            "Man",
+                            "Woman",
+                            "Other"
+                        ],
+                        "description": "Gender of the user."
+                    },
+                    "dailyNorma": {
+                        "type": "integer",
+                        "description": "Daily norm of water consumption for the user."
+                    }
+                }
+            },
+            "UserUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "userName": {
+                        "type": "string",
+                        "description": "Username of the user."
+                    },
+                    "gender": {
+                        "type": "string",
+                        "enum": [
+                            "Man",
+                            "Woman"
+                        ],
+                        "description": "Gender of the user."
+                    },
+                    "dailyNorm": {
+                        "type": "number",
+                        "description": "Daily norm of water consumption for the user."
+                    },
+                    "oldPassword": {
+                        "type": "string",
+                        "description": "Old password of the user."
+                    },
+                    "newPassword": {
+                        "type": "string",
+                        "description": "New password of the user."
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "Email address of the user."
+                    }
+                },
+                "required": [
+                    "oldPassword",
+                    "newPassword"
+                ]
+            },
+            "UserUpdateResponse": {
+                "type": "object",
+                "properties": {
+                    "avatarURL": {
+                        "type": "string",
+                        "format": "binary",
+                        "description": "Avatar image file. Supported formats: webp, jpg, jpeg, img."
+                    },
+                    "userName": {
+                        "type": "string",
+                        "description": "Username of the user."
+                    },
+                    "gender": {
+                        "type": "string",
+                        "enum": [
+                            "Man",
+                            "Woman"
+                        ],
+                        "description": "Gender of the user."
+                    },
+                    "dailyNorm": {
+                        "type": "number",
+                        "description": "Daily norm of water consumption for the user."
+                    },
+                    "oldPassword": {
+                        "type": "string",
+                        "description": "Old password of the user."
+                    },
+                    "newPassword": {
+                        "type": "string",
+                        "description": "New password of the user."
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "Email address of the user."
+                    }
+                }
+            },
             "ToDayWaterDataResponse": {
                 "type": "object",
                 "properties": {
@@ -783,7 +878,7 @@
                     }
                 }
             },
-            "UpdateWaterRequest":{
+            "UpdateWaterRequest": {
                 "type": "object",
                 "properties": {
                     " createdDate": {
@@ -799,9 +894,8 @@
                 "example": {
                     "date": "2024-04-22T21:23:05.617Z",
                     "waterDose": 200
-                } 
+                }
             }
-           
         },
         "securitySchemes": {
             "Bearer": {
