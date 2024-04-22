@@ -10,25 +10,25 @@ const waterRouter = express.Router();
 waterRouter.use(authenticate);
 
 waterRouter.post(
-"/",
+"/add",
 validateBody(waterSchema), 
 waterController.addWater);
 
-waterRouter.get("/:id", isValidId, waterController.today);
+waterRouter.get("/today/:id", isValidId, waterController.today);
 
-waterRouter.delete("/:id", isValidId, waterController.deleteWaterRecord);
+waterRouter.delete("/remove/:id", isValidId, waterController.deleteWaterRecord);
 
 waterRouter.patch(
-  "/:id",
+  "/update/:id",
   isValidId,
   validateBody(waterSchema),
   waterController.updateWaterDose
 );
 
-waterRouter.get("/", waterController.month);
+waterRouter.get("/month", waterController.month);
 
 waterRouter.patch(
-  "/",
+  "/waterrate",
   validateBody(waterRateSchema),
   waterController.dailyNorm
 );
