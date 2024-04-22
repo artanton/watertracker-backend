@@ -26,7 +26,7 @@ const addWater = async (req, res) => {
       persantRate: waterRate,
       dailyNorma: userDailyNorma,
       waterSavings: 1,
-      dailyWaterInfo: [data],
+      WaterNotes: [data],
     });
 
     res.status(201).json(result);
@@ -36,7 +36,7 @@ const addWater = async (req, res) => {
     const result = await Water.findOneAndUpdate(
       { _id: id },
       {
-        $push: { dailyWaterInfo: { createdDate: date, waterDose } },
+        $push: { WaterNotes: { createdDate: date, waterDose } },
         $inc: { waterTotal: +waterDose, waterSavings: 1 },
         $set: {
           persantRate: Math.round(
@@ -68,12 +68,11 @@ const deleteWaterRecord = async (req, res) => {
 
   const actualDate = new Date().toISOString().substring(0, 10);
   let ToDayWaterData = await Water.findOne({ owner, date: actualDate });
-  console.log(ToDayWaterData);
   if (!ToDayWaterData) {
     throw HttpError(404, "Not found");
   }
 
-  const waterRecord = ToDayWaterData.dailyWaterInfo.find(
+  const waterRecord = ToDayWaterData.WaterNotes.find(
     (option) => option.id === id
   );
 
@@ -85,7 +84,7 @@ const deleteWaterRecord = async (req, res) => {
     { owner, date: actualDate },
     {
       $inc: { waterTotal: -deletedWaterDose, waterSavings: -1 },
-      $pull: { dailyWaterInfo: { _id: id } },
+      $pull: { WaterNotes: { _id: id } },
       $set: {
         persantRate: Math.round(
           ((waterTotal - deletedWaterDose) / userDailyNorma) * 100
@@ -110,7 +109,7 @@ const updateWaterDose = async (req, res) => {
     throw HttpError(404, "Not Found");
   }
 
-  let waterRecord = ToDayWaterData.dailyWaterInfo.find(
+  let waterRecord = ToDayWaterData.WaterNotes.find(
     (option) => option.id === id
   );
   if (!waterRecord) {
@@ -124,23 +123,21 @@ const updateWaterDose = async (req, res) => {
   const waterDoseShift = oldWaterDose - newWaterDose;
 
   ToDayWaterData = await Water.findOneAndUpdate(
-    { "dailyWaterInfo._id": id },
+    { "WaterNotes._id": id },
     {
       $inc: { waterTotal: -waterDoseShift },
       $set: {
         persantRate: Math.round(
           ((waterTotal - waterDoseShift) / userDailyNorma) * 100
         ),
-        "dailyWaterInfo.$.waterDose": newWaterDose,
-        "dailyWaterInfo.$.createdDate": newCreatedDate,
+        "WaterNotes.$.waterDose": newWaterDose,
+        "WaterNotes.$.createdDate": newCreatedDate,
       },
     },
 
     { new: true }
   );
-  waterRecord = ToDayWaterData.dailyWaterInfo.find(
-    (option) => option.id === id
-  );
+  waterRecord = ToDayWaterData.WaterNotes.find((option) => option.id === id);
 
   res.status(200).json(waterRecord);
 };
@@ -214,7 +211,7 @@ const dailyNorm = async (req, res) => {
   }
 
   const actualDate = new Date().toISOString().substring(0, 10);
-  console.log(actualDate);
+
   const toDayWaterData = await Water.findOne({ owner, date: actualDate });
   if (!toDayWaterData) {
     throw HttpError(404, "Not Found");
@@ -229,7 +226,7 @@ const dailyNorm = async (req, res) => {
       persantRate: 0,
       dailyNorma: newDailyNorma,
       waterSavings: 0,
-      dailyWaterInfo: [],
+      WaterNotes: [],
     });
 
     return res.status(201).json(result);

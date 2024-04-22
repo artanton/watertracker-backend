@@ -36,7 +36,7 @@ const waterSchema = new Schema(
       default: 0,
      } ,    
 
-    dailyWaterInfo: {
+    WaterNotes: {
       type: [
         {
           createdDate: {

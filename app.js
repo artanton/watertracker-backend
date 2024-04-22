@@ -1,4 +1,7 @@
 import express from "express";
+import swaggerUi from "swagger-ui-express"
+import swaggerDocument from "./swagger.json" assert { type: 'json' };
+
 import morgan from "morgan";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -19,6 +22,8 @@ app.use("/api/auth", authRouter);
 app.use("/api/water", waterRouter);
 
 app.use("/api/updateProfile", userSettingsRouter);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
