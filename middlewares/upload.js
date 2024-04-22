@@ -19,8 +19,8 @@ const storage = new CloudinaryStorage({
       allowed_formats: ["jpg", "png", "webp", "jpeg"], // Adjust the allowed formats as needed
       public_id: req.user._id, // Use original filename as the public ID
       transformation: [
-        { width: 350, height: 350 },
-        { width: 700, height: 700 },
+        { width: 350, height: 350, crop: "fill" },
+        { width: 700, height: 700, crop: "fill" },
       ],
     };
   },
