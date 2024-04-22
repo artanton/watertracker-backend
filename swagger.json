@@ -67,7 +67,7 @@
                         "content": {}
                     },
                     "409": {
-                        "description": "Provided email already exists",
+                        "description": "Email already in use",
                         "content": {}
                     }
                 }
@@ -78,11 +78,11 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "User registration",
+                "summary": "User login",
                 "parameters": [],
                 "security": [],
                 "requestBody": {
-                    "description": "Registration's object",
+                    "description": "Login object",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -93,12 +93,12 @@
                     }
                 },
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                    "$ref": "#/components/schemas/LoginResponse"
                                 }
                             }
                         }
@@ -107,8 +107,8 @@
                         "description": "Bad request (invalid request body)",
                         "content": {}
                     },
-                    "409": {
-                        "description": "Provided email already exists",
+                    "401": {
+                        "description": "Email or password invalid",
                         "content": {}
                     }
                 }
@@ -357,7 +357,7 @@
                 "tags": [
                     "Water"
                 ],
-                "summary": "User registration",
+                "summary": "Add Water Dose",
                 "parameters": [],
                 "security": [
                     {
@@ -365,23 +365,33 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "Registration's object",
+                    "description": "Water dose object",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/RegistrationRequest"
+                                "$ref": "#/components/schemas/AddWaterRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Successful operation",
+                        "description": "Daily water record create",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                    "$ref": "#/components/schemas/AddWaterResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Adding water dose to daily water record",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AddWaterResponse"
                                 }
                             }
                         }
@@ -390,26 +400,26 @@
                         "description": "Bad request (invalid request body)",
                         "content": {}
                     },
-                    "409": {
-                        "description": "Provided email already exists",
+                    "401:": {
+                        "description": " Unauthorized",
                         "content": {}
                     }
                 }
             }
         },
         "/water/update": {
-            "post": {
+            "patch": {
                 "tags": [
                     "Water"
                 ],
-                "summary": "User registration",
+                "summary": "Update Water note",
                 "parameters": [
                     {
                         "id": "path",
                         "name": "id",
                         "required": "true",
                         "type": "string",
-                        "description": "Water daily data id"
+                        "description": "Water Water Note id"
                     }
                 ],
                 "security": [
@@ -417,24 +427,23 @@
                         "Bearer": []
                     }
                 ],
-                "requestBody": {
-                    "description": "Registration's object",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RegistrationRequest"
-                            }
+                "requestBody": { "description": "Water dose object",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/UpdateWaterRequest"
                         }
                     }
+                }
                 },
                 "responses": {
-                    "201": {
-                        "description": "Successful operation",
+                    "200": {
+                        "description": "Successful operation Water note Updated  ",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                    "$ref": "#/components/schemas/AddWaterResponse"
                                 }
                             }
                         }
@@ -443,19 +452,19 @@
                         "description": "Bad request (invalid request body)",
                         "content": {}
                     },
-                    "409": {
-                        "description": "Provided email already exists",
+                    "404": {
+                        "description": "Not Found",
                         "content": {}
                     }
                 }
             }
         },
         "/water/waterrate": {
-            "post": {
+            "patch": {
                 "tags": [
                     "Water"
                 ],
-                "summary": "User registration",
+                "summary": "Change Water Daily Norma (Water rate)",
                 "parameters": [],
                 "security": [
                     {
@@ -463,35 +472,34 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "Registration's object",
+                    "description": "New daily norma object",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/RegistrationRequest"
+                                "$ref": "#/components/schemas/DailyNormaRequest"
                             }
                         }
                     }
                 },
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Successful operation",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                    "$ref": "#/components/schemas/AddWaterResponse"
                                 }
                             }
                         }
                     },
-                    "400": {
+                    "400":[ {
                         "description": "Bad request (invalid request body)",
                         "content": {}
-                    },
-                    "409": {
-                        "description": "Provided email already exists",
-                        "content": {}
                     }
+                   
+                ]
+                   
                 }
             }
         },
@@ -500,14 +508,14 @@
                 "tags": [
                     "Water"
                 ],
-                "summary": "User registration",
+                "summary": "Delete Water Note",
                 "parameters": [
                     {
                         "id": "path",
                         "name": "id",
                         "required": "true",
                         "type": "string",
-                        "description": "Water daily data id"
+                        "description": "Water Water Note id"
                     }
                 ],
                 "security": [
@@ -515,42 +523,72 @@
                         "Bearer": []
                     }
                 ],
-                "requestBody": {
-                    "description": "Registration's object",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RegistrationRequest"
-                            }
-                        }
-                    }
-                },
+                "requestBody": {},
                 "responses": {
-                    "201": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/RegistrationResponse"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request (invalid request body)",
+                    "200": {
+                        "description": "Delete success",
                         "content": {}
                     },
-                    "409": {
-                        "description": "Provided email already exists",
+                    "404": {
+                        "description": "Not Found",
                         "content": {}
                     }
+                   
                 }
             }
         }
     },
     "components": {
         "schemas": {
+            "RegistrationRequest": {
+                "type": "object",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password",
+                        "example": "qwerty12"
+                    }
+                }
+            },
+            "RegistrationResponse": {
+                "type": "object",
+                "properties": {
+                    "type": "object",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "description": "User's email",
+                            "format": "email"
+                        },
+                        "userId": {
+                            "type": "number",
+                            "description": "User's id",
+                            "example": "32143232436545474"
+                        }
+                    }
+                }
+            },
+
+            "LoginResponse":{
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "JWT token generated upon successful authentication."
+                  }
+                }  
+            },
+
+
             "ToDayWaterDataResponse": {
                 "type": "object",
                 "properties": {
@@ -637,66 +675,133 @@
             "MonthWaterResponse": {
                 "type": "array",
                 "items": {
-                  "type": "object",
-                  "properties": {
-                    "date": {
-                      "type": "string",
-                      "format": "date",
-                      "example": "2024-04-01"
-                    },
-                    "dailyNorma": {
-                      "type": "integer"
-                
-                    },
-                    "persantRate": {
-                      "type": "integer"
-            
-                    },
-                    "waterSavings": {
-                      "type": "integer"
-                
-                    }
-                  }
-                }
-              },
-            
-            "RegistrationRequest": {
-                "type": "object",
-                "required": [
-                    "email",
-                    "password"
-                ],
-                "properties": {
-                    "email": {
-                        "type": "string",
-                        "description": "User's email",
-                        "format": "email"
-                    },
-                    "password": {
-                        "type": "string",
-                        "description": "User's password",
-                        "example": "qwerty123"
-                    }
-                }
-            },
-            "RegistrationResponse": {
-                "type": "object",
-                "properties": {
                     "type": "object",
                     "properties": {
-                        "email": {
+                        "date": {
                             "type": "string",
-                            "description": "User's email",
-                            "format": "email"
+                            "format": "date",
+                            "example": "2024-04-01"
                         },
-                        "userId": {
-                            "type": "number",
-                            "description": "User's id",
-                            "example": "32143232436545474"
+                        "dailyNorma": {
+                            "type": "integer"
+                        },
+                        "persantRate": {
+                            "type": "integer"
+                        },
+                        "waterSavings": {
+                            "type": "integer"
                         }
                     }
                 }
+            },
+            "AddWaterRequest": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time when the water dose record was created"
+                    },
+                    "waterDose": {
+                        "type": "number",
+                        "description": "Amount of water consumed in milliliters"
+                    }
+                },
+                "example": {
+                    "date": "2024-04-22T21:23:05.617Z",
+                    "waterDose": 200
+                }
+            },
+            "AddWaterResponse": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the water record"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Date of the water record"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "description": "Owner of the water record"
+                    },
+                    "dailyNorma": {
+                        "type": "integer",
+                        "description": "Daily water consumption norm in milliliters"
+                    },
+                    "waterTotal": {
+                        "type": "integer",
+                        "description": "Total water consumption in milliliters"
+                    },
+                    "persantRate": {
+                        "type": "integer",
+                        "description": "Water consumption percentage rate"
+                    },
+                    "waterSavings": {
+                        "type": "integer",
+                        "description": "Amount of water savings in milliliters"
+                    },
+                    "WaterNotes": {
+                        "type": "array",
+                        "description": "Array of water dose notes",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "createdDate": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Date and time when the water dose note was created"
+                                },
+                                "waterDose": {
+                                    "type": "integer",
+                                    "description": "Amount of water dose in milliliters"
+                                },
+                                "_id": {
+                                    "type": "string",
+                                    "description": "Unique identifier for the water dose note"
+                                }
+                            },
+                            "required": [
+                                "createdDate",
+                                "waterDose",
+                                "_id"
+                            ]
+                        }
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time when the water record was created"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time when the water record was last updated"
+                    }
+                }
+            },
+            "UpdateWaterRequest":{
+                "type": "object",
+                "properties": {
+                    " createdDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time when the water dose record was updated"
+                    },
+                    "waterDose": {
+                        "type": "number",
+                        "description": "Amount of water consumed in milliliters"
+                    }
+                },
+                "example": {
+                    "date": "2024-04-22T21:23:05.617Z",
+                    "waterDose": 200
+                } 
             }
+           
         },
         "securitySchemes": {
             "Bearer": {

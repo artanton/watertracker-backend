@@ -208,7 +208,7 @@ const dailyNorm = async (req, res) => {
   const { _id: owner } = req.user;
   const { dailyNorma: newDailyNorma } = req.body;
   if (!newDailyNorma) {
-    throw HttpError(400, "Daily norma has no value!");
+    throw HttpError(400, "Bad request (invalid request body)");
   }
 
   const actualDate = new Date().toISOString().substring(0, 10);
