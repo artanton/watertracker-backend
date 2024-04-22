@@ -1,687 +1,709 @@
 {
-  "openapi": "3.0.0",
-  "info": {
-      "version": "0.0.1",
-      "title": "Swagger test",
-      "description": "Showing off swagger-ui-express",
-      "license": {
-          "name": "MIT",
-          "url": "https://opensource.org/licenses/MIT"
-      }
-  },
-  "consumes": [
-      "application/json",
-      "multipart/form-data"
-  ],
-  "produces": [
-      "application/json"
-  ],
-  "servers": [
-      {
-          "url": "http://localhost:3000"
-      }
-  ],
-  "tags": [
-      {
-          "name": "Auth",
-          "description": "Authorization endpoints"
-      },
-      {
-          "name": "Water",
-          "description": "Water record's collection endpoits"
-      }
-  ],
-  "paths": {
-      "/auth/register": {
-          "post": {
-              "tags": [
-                  "Auth"
-              ],
-              "summary": "User registration",
-              "parameters": [],
-              "security": [],
-              "requestBody": {
-                  "description": "Registration's object",
-                  "required": true,
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/RegistrationRequest"
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "201": {
-                      "description": "Successful operation",
-                      "content": {
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/RegistrationResponse"
-                              }
-                          }
-                      }
-                  },
-                  "400": {
-                      "description": "Bad request (invalid request body)",
-                      "content": {}
-                  },
-                  "409": {
-                      "description": "Provided email already exists",
-                      "content": {}
-                  }
-              }
-          }
-      },
-      "/auth/login": {
-          "post": {
-              "tags": [
-                  "Auth"
-              ],
-              "summary": "User registration",
-              "parameters": [],
-              "security": [],
-              "requestBody": {
-                  "description": "Registration's object",
-                  "required": true,
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/RegistrationRequest"
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "201": {
-                      "description": "Successful operation",
-                      "content": {
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/RegistrationResponse"
-                              }
-                          }
-                      }
-                  },
-                  "400": {
-                      "description": "Bad request (invalid request body)",
-                      "content": {}
-                  },
-                  "409": {
-                      "description": "Provided email already exists",
-                      "content": {}
-                  }
-              }
-          }
-      },
-      "/auth/current": {
-          "post": {
-              "tags": [
-                  "Auth"
-              ],
-              "summary": "User registration",
-              "parameters": [],
-              "security": [
-                  {
-                      "Bearer": []
-                  }
-              ],
-              "requestBody": {
-                  "description": "Registration's object",
-                  "required": true,
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/RegistrationRequest"
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "201": {
-                      "description": "Successful operation",
-                      "content": {
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/RegistrationResponse"
-                              }
-                          }
-                      }
-                  },
-                  "400": {
-                      "description": "Bad request (invalid request body)",
-                      "content": {}
-                  },
-                  "409": {
-                      "description": "Provided email already exists",
-                      "content": {}
-                  }
-              }
-          }
-      },
-      "/auth/logout": {
-          "post": {
-              "tags": [
-                  "Auth"
-              ],
-              "summary": "User registration",
-              "parameters": [],
-              "security": [
-                  {
-                      "Bearer": []
-                  }
-              ],
-              "requestBody": {
-                  "description": "Registration's object",
-                  "required": true,
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/RegistrationRequest"
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "201": {
-                      "description": "Successful operation",
-                      "content": {
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/RegistrationResponse"
-                              }
-                          }
-                      }
-                  },
-                  "400": {
-                      "description": "Bad request (invalid request body)",
-                      "content": {}
-                  },
-                  "409": {
-                      "description": "Provided email already exists",
-                      "content": {}
-                  }
-              }
-          }
-      },
-      "/updateProfile/": {
-          "post": {
-              "tags": [
-                  ""
-              ],
-              "summary": "User registration",
-              "parameters": [],
-              "security": [
-                  {
-                      "Bearer": []
-                  }
-              ],
-              "requestBody": {
-                  "description": "Registration's object",
-                  "required": true,
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/RegistrationRequest"
-                          }
-                      },
-                      "multipart/form-data": {
-                          "schema": {
-                              "type": "object",
-                              "properties": {
-                                  "image": {
-                                      "type": "string",
-                                      "format": "binary",
-                                      "description": "Image file to upload"
-                                  },
-                                  "userData": {
-                                      "type": "string",
-                                      "description": "User's data in JSON format"
-                                  }
-                              }
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "201": {
-                      "description": "Successful operation",
-                      "content": {
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/RegistrationResponse"
-                              }
-                          }
-                      }
-                  },
-                  "400": {
-                      "description": "Bad request (invalid request body)",
-                      "content": {}
-                  },
-                  "409": {
-                      "description": "Provided email already exists",
-                      "content": {}
-                  }
-              }
-          }
-      },
-      "/water/today": {
-          "post": {
-              "tags": [
-                  "Water"
-              ],
-              "summary": "Water data for today",
-              "parameters": [
-                  {
-                      "id": "path",
-                      "name": "id",
-                      "required": "true",
-                      "type": "string",
-                      "description": "Water daily data id"
-                  }
-              ],
-              "security": [
-                  {
-                      "Bearer": []
-                  }
-              ],
-              "requestBody": {},
-              "responses": {
-                  "200": {
-                      "description": "Successful operation",
-                      "content": {
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/ToDayWaterDataResponse"
-                              }
-                          }
-                      }
-                  },
-                  "404": {
-                      "description": "Not Found",
-                      "content": {}
-                  }
-              }
-          }
-      },
-      "/water/month": {
-          "post": {
-              "tags": [
-                  "Water"
-              ],
-              "summary": "User registration",
-              "parameters": [
-                  {
-                      "name": "date",
-                      "required": "true",
-                      "type": "string",
-                      "description": "Random date of the target month"
-                  }
-              ],
-              "security": [
-                  {
-                      "Bearer": []
-                  }
-              ],
-              "requestBody": {
-                  "description": "Registration's object",
-                  "required": true,
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/RegistrationRequest"
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "201": {
-                      "description": "Successful operation",
-                      "content": {
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/RegistrationResponse"
-                              }
-                          }
-                      }
-                  },
-                  "400": {
-                      "description": "Bad request (invalid request body)",
-                      "content": {}
-                  },
-                  "409": {
-                      "description": "Provided email already exists",
-                      "content": {}
-                  }
-              }
-          }
-      },
-      "/water/add": {
-          "post": {
-              "tags": [
-                  "Water"
-              ],
-              "summary": "User registration",
-              "parameters": [],
-              "security": [
-                  {
-                      "Bearer": []
-                  }
-              ],
-              "requestBody": {
-                  "description": "Registration's object",
-                  "required": true,
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/RegistrationRequest"
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "201": {
-                      "description": "Successful operation",
-                      "content": {
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/RegistrationResponse"
-                              }
-                          }
-                      }
-                  },
-                  "400": {
-                      "description": "Bad request (invalid request body)",
-                      "content": {}
-                  },
-                  "409": {
-                      "description": "Provided email already exists",
-                      "content": {}
-                  }
-              }
-          }
-      },
-      "/water/update": {
-          "post": {
-              "tags": [
-                  "Water"
-              ],
-              "summary": "User registration",
-              "parameters": [
-                  {
-                      "id": "path",
-                      "name": "id",
-                      "required": "true",
-                      "type": "string",
-                      "description": "Water daily data id"
-                  }
-              ],
-              "security": [
-                  {
-                      "Bearer": []
-                  }
-              ],
-              "requestBody": {
-                  "description": "Registration's object",
-                  "required": true,
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/RegistrationRequest"
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "201": {
-                      "description": "Successful operation",
-                      "content": {
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/RegistrationResponse"
-                              }
-                          }
-                      }
-                  },
-                  "400": {
-                      "description": "Bad request (invalid request body)",
-                      "content": {}
-                  },
-                  "409": {
-                      "description": "Provided email already exists",
-                      "content": {}
-                  }
-              }
-          }
-      },
-      "/water/waterrate": {
-          "post": {
-              "tags": [
-                  "Water"
-              ],
-              "summary": "User registration",
-              "parameters": [],
-              "security": [
-                  {
-                      "Bearer": []
-                  }
-              ],
-              "requestBody": {
-                  "description": "Registration's object",
-                  "required": true,
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/RegistrationRequest"
-                          }
-                      }
-                  }
-              },
-              "responses": {
-                  "201": {
-                      "description": "Successful operation",
-                      "content": {
-                          "application/json": {
-                              "schema": {
-                                  "$ref": "#/components/schemas/RegistrationResponse"
-                              }
-                          }
-                      }
-                  },
-                  "400": {
-                      "description": "Bad request (invalid request body)",
-                      "content": {}
-                  },
-                  "409": {
-                      "description": "Provided email already exists",
-                      "content": {}
-                  }
-              }
-          }
-      },
-      "/water/remove": {
-        "post": {
-            "tags": [
-                "Water"
-            ],
-            "summary": "User registration",
-            "parameters": [
-                {
-                    "id": "path",
-                    "name": "id",
-                    "required": "true",
-                    "type": "string",
-                    "description": "Water daily data id"
-                }
-            ],
-            "security": [
-                {
-                    "Bearer": []
-                }
-            ],
-            "requestBody": {
-                "description": "Registration's object",
-                "required": true,
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "$ref": "#/components/schemas/RegistrationRequest"
-                        }
-                    }
-                }
-            },
-            "responses": {
-                "201": {
-                    "description": "Successful operation",
+    "openapi": "3.0.0",
+    "info": {
+        "version": "0.0.1",
+        "title": "Swagger test",
+        "description": "Showing off swagger-ui-express",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "consumes": [
+        "application/json",
+        "multipart/form-data"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "servers": [
+        {
+            "url": "http://localhost:3000"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Authorization endpoints"
+        },
+        {
+            "name": "Water",
+            "description": "Water record's collection endpoits"
+        }
+    ],
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User registration",
+                "parameters": [],
+                "security": [],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/RegistrationResponse"
+                                "$ref": "#/components/schemas/RegistrationRequest"
                             }
                         }
                     }
                 },
-                "400": {
-                    "description": "Bad request (invalid request body)",
-                    "content": {}
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Provided email already exists",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User registration",
+                "parameters": [],
+                "security": [],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistrationRequest"
+                            }
+                        }
+                    }
                 },
-                "409": {
-                    "description": "Provided email already exists",
-                    "content": {}
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Provided email already exists",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/auth/current": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User registration",
+                "parameters": [],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistrationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Provided email already exists",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User registration",
+                "parameters": [],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistrationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Provided email already exists",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/updateProfile/": {
+            "post": {
+                "tags": [
+                    ""
+                ],
+                "summary": "User registration",
+                "parameters": [],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistrationRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Image file to upload"
+                                    },
+                                    "userData": {
+                                        "type": "string",
+                                        "description": "User's data in JSON format"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Provided email already exists",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/water/today": {
+            "get": {
+                "tags": [
+                    "Water"
+                ],
+                "summary": "Water data for today",
+                "parameters": [
+                    {
+                        "id": "path",
+                        "name": "id",
+                        "required": "true",
+                        "type": "string",
+                        "description": "Water daily data id"
+                    }
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ToDayWaterDataResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {}
+                    },
+                    "401:": {
+                        "description": " Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/water/month": {
+            "get": {
+                "tags": [
+                    "Water"
+                ],
+                "summary": "Water data for month",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "date",
+                        "required": "true",
+                        "type": "string",
+                        "description": "Random date of the target month",
+                        "example": "2024-04-11"
+                    }
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MonthWaterResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {}
+                    },
+                    "401:": {
+                        "description": " Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/water/add": {
+            "post": {
+                "tags": [
+                    "Water"
+                ],
+                "summary": "User registration",
+                "parameters": [],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistrationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Provided email already exists",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/water/update": {
+            "post": {
+                "tags": [
+                    "Water"
+                ],
+                "summary": "User registration",
+                "parameters": [
+                    {
+                        "id": "path",
+                        "name": "id",
+                        "required": "true",
+                        "type": "string",
+                        "description": "Water daily data id"
+                    }
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistrationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Provided email already exists",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/water/waterrate": {
+            "post": {
+                "tags": [
+                    "Water"
+                ],
+                "summary": "User registration",
+                "parameters": [],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistrationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Provided email already exists",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/water/remove": {
+            "post": {
+                "tags": [
+                    "Water"
+                ],
+                "summary": "User registration",
+                "parameters": [
+                    {
+                        "id": "path",
+                        "name": "id",
+                        "required": "true",
+                        "type": "string",
+                        "description": "Water daily data id"
+                    }
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistrationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Provided email already exists",
+                        "content": {}
+                    }
                 }
             }
         }
-    }
-  },
-  "components": {
-      "schemas": {
-          "ToDayWaterDataResponse": {
-              "type": "object",
-              "properties": {
-                  "_id": {
-                      "type": "string",
-                      "description": "Unique identifier for the water record"
-                  },
-                  "date": {
-                      "type": "string",
-                      "format": "date",
-                      "description": "Date of the water record"
-                  },
-                  "owner": {
-                      "type": "string",
-                      "description": "Owner of the water record"
-                  },
-                  "dailyNorma": {
-                      "type": "integer",
-                      "description": "Daily water consumption norm in milliliters"
-                  },
-                  "waterTotal": {
-                      "type": "integer",
-                      "description": "Total water consumption in milliliters"
-                  },
-                  "persantRate": {
-                      "type": "integer",
-                      "description": "Water consumption percentage rate"
-                  },
-                  "waterSavings": {
-                      "type": "integer",
-                      "description": "Amount of water savings in milliliters"
-                  },
-                  "WaterNotes": {
-                      "type": "array",
-                      "description": "Array of water dose notes",
-                      "items": {
-                          "type": "object",
-                          "properties": {
-                              "createdDate": {
-                                  "type": "string",
-                                  "format": "date-time",
-                                  "description": "Date and time when the water dose note was created"
-                              },
-                              "waterDose": {
-                                  "type": "integer",
-                                  "description": "Amount of water dose in milliliters"
-                              },
-                              "_id": {
-                                  "type": "string",
-                                  "description": "Unique identifier for the water dose note"
-                              }
-                          },
-                          "required": [
-                              "createdDate",
-                              "waterDose",
-                              "_id"
-                          ]
-                      }
-                  },
-                  "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "description": "Date and time when the water record was created"
-                  },
-                  "updatedAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "description": "Date and time when the water record was last updated"
-                  }
-              },
-              "required": [
-                  "_id",
-                  "date",
-                  "owner",
-                  "dailyNorma",
-                  "waterTotal",
-                  "persantRate",
-                  "waterSavings",
-                  "WaterNotes",
-                  "createdAt",
-                  "updatedAt"
-              ]
-          },
-          "RegistrationRequest": {
-              "type": "object",
-              "required": [
-                  "email",
-                  "password"
-              ],
-              "properties": {
-                  "email": {
-                      "type": "string",
-                      "description": "User's email",
-                      "format": "email"
-                  },
-                  "password": {
-                      "type": "string",
-                      "description": "User's password",
-                      "example": "qwerty123"
-                  }
-              }
-          },
-          "RegistrationResponse": {
-              "type": "object",
-              "properties": {
+    },
+    "components": {
+        "schemas": {
+            "ToDayWaterDataResponse": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the water record"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Date of the water record"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "description": "Owner of the water record"
+                    },
+                    "dailyNorma": {
+                        "type": "integer",
+                        "description": "Daily water consumption norm in milliliters"
+                    },
+                    "waterTotal": {
+                        "type": "integer",
+                        "description": "Total water consumption in milliliters"
+                    },
+                    "persantRate": {
+                        "type": "integer",
+                        "description": "Water consumption percentage rate"
+                    },
+                    "waterSavings": {
+                        "type": "integer",
+                        "description": "Amount of water savings in milliliters"
+                    },
+                    "WaterNotes": {
+                        "type": "array",
+                        "description": "Array of water dose notes",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "createdDate": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Date and time when the water dose note was created"
+                                },
+                                "waterDose": {
+                                    "type": "integer",
+                                    "description": "Amount of water dose in milliliters"
+                                },
+                                "_id": {
+                                    "type": "string",
+                                    "description": "Unique identifier for the water dose note"
+                                }
+                            },
+                            "required": [
+                                "createdDate",
+                                "waterDose",
+                                "_id"
+                            ]
+                        }
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time when the water record was created"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time when the water record was last updated"
+                    }
+                },
+                "required": [
+                    "_id",
+                    "date",
+                    "owner",
+                    "dailyNorma",
+                    "waterTotal",
+                    "persantRate",
+                    "waterSavings",
+                    "WaterNotes",
+                    "createdAt",
+                    "updatedAt"
+                ]
+            },
+            "MonthWaterResponse": {
+                "type": "array",
+                "items": {
                   "type": "object",
                   "properties": {
-                      "email": {
-                          "type": "string",
-                          "description": "User's email",
-                          "format": "email"
-                      },
-                      "userId": {
-                          "type": "number",
-                          "description": "User's id",
-                          "example": "32143232436545474"
-                      }
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "example": "2024-04-01"
+                    },
+                    "dailyNorma": {
+                      "type": "integer"
+                
+                    },
+                    "persantRate": {
+                      "type": "integer"
+            
+                    },
+                    "waterSavings": {
+                      "type": "integer"
+                
+                    }
                   }
-              }
-          }
-      },
-      "securitySchemes": {
-          "Bearer": {
-              "type": "http",
-              "scheme": "bearer",
-              "bearerFormat": "JWT"
-          }
-      }
-  }
+                }
+              },
+            
+            "RegistrationRequest": {
+                "type": "object",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password",
+                        "example": "qwerty123"
+                    }
+                }
+            },
+            "RegistrationResponse": {
+                "type": "object",
+                "properties": {
+                    "type": "object",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "description": "User's email",
+                            "format": "email"
+                        },
+                        "userId": {
+                            "type": "number",
+                            "description": "User's id",
+                            "example": "32143232436545474"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
 }
