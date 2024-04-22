@@ -29,6 +29,10 @@
         {
             "name": "Water",
             "description": "Water record's collection endpoits"
+        },
+        {
+            "name": "userSettings",
+            "description": "User data"
         }
     ],
     "paths": {
