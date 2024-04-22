@@ -1,0 +1,544 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "version": "0.0.1",
+      "title": "Swagger test",
+      "description": "Showing off swagger-ui-express",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "consumes": ["application/json", "multipart/form-data"],
+    "produces": ["application/json"],
+    "servers": [{"url": "http://localhost:3000"}],
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "Authorization endpoints"
+      },
+      {
+        "name": "Water",
+        "description": "Water record's collection endpoits"
+      }
+    ],
+
+
+
+    "paths": {
+      "/auth/register": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "User registration",
+
+          "parameters": [],
+          "security": [],
+
+            
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+
+
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/RegistrationRequest"}
+              }
+            }
+          },
+
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {"$ref": "#/components/schemas/RegistrationResponse"}
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request (invalid request body)",
+              "content": {}
+            },
+            "409": {
+              "description": "Provided email already exists",
+              "content": {}
+            }
+          }
+        }
+      },
+
+      "/auth/login": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "User registration",
+
+          "parameters": [],
+          "security": [],
+
+            
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+
+
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/RegistrationRequest"}
+              }              
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {"$ref": "#/components/schemas/RegistrationResponse"}
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request (invalid request body)",
+              "content": {}
+            },
+            "409": {
+              "description": "Provided email already exists",
+              "content": {}
+            }
+          }
+        }
+      },
+
+      "/auth/current": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "User registration",
+
+          "parameters": [],
+          "security": [{"Bearer": []}],
+
+            
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+
+
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/RegistrationRequest"}
+              }
+            }
+          },
+
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {"$ref": "#/components/schemas/RegistrationResponse"}
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request (invalid request body)",
+              "content": {}
+            },
+            "409": {
+              "description": "Provided email already exists",
+              "content": {}
+            }
+          }
+        }
+      },
+
+      "/auth/logout": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "User registration",
+
+          "parameters": [],
+          "security": [{"Bearer": []}],
+
+            
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+
+
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/RegistrationRequest"}
+              }
+            }
+          },
+
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {"$ref": "#/components/schemas/RegistrationResponse"}
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request (invalid request body)",
+              "content": {}
+            },
+            "409": {
+              "description": "Provided email already exists",
+              "content": {}
+            }
+          }
+        }
+      },
+
+      "/updateProfile/": {
+        "post": {
+          "tags": [""],
+          "summary": "User registration",
+
+          "parameters": [],
+          "security": [{"Bearer": []}],
+
+            
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+
+
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/RegistrationRequest"}
+              },
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "image": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "Image file to upload"
+                    },
+                    "userData": {
+                      "type": "string",
+                      "description": "User's data in JSON format"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {"$ref": "#/components/schemas/RegistrationResponse"}
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request (invalid request body)",
+              "content": {}
+            },
+            "409": {
+              "description": "Provided email already exists",
+              "content": {}
+            }
+          }
+        }
+      },
+
+      "/water/today": {
+        "post": {
+          "tags": ["Water"],
+          "summary": "User registration",
+
+          "parameters": [
+            {
+                "id":"path",
+                "name":"id",
+                "required":"true",
+                "type":"string",
+                "description":"Water daily data id"
+            }
+          ],
+          "security": [{"Bearer": []}],
+
+            
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+
+
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/RegistrationRequest"}
+              }
+            }
+          },
+
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {"$ref": "#/components/schemas/RegistrationResponse"}
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request (invalid request body)",
+              "content": {}
+            },
+            "409": {
+              "description": "Provided email already exists",
+              "content": {}
+            }
+          }
+        }
+      },
+
+      "/water/month": {
+        "post": {
+          "tags": ["Water"],
+          "summary": "User registration",
+
+          "parameters": [
+            {
+                
+                "name":"date",
+                "required":"true",
+                "type":"string",
+                "description":"Random date of the target month"
+            }
+          ],
+          "security": [{"Bearer": []}],
+
+            
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+
+
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/RegistrationRequest"}
+              }
+            }
+          },
+
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {"$ref": "#/components/schemas/RegistrationResponse"}
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request (invalid request body)",
+              "content": {}
+            },
+            "409": {
+              "description": "Provided email already exists",
+              "content": {}
+            }
+          }
+        }
+      },
+      
+      "/water/add": {
+        "post": {
+          "tags": ["Water"],
+          "summary": "User registration",
+
+          "parameters": [],
+          "security": [{"Bearer": []}],
+
+            
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+
+
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/RegistrationRequest"}
+              }
+            }
+          },
+
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {"$ref": "#/components/schemas/RegistrationResponse"}
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request (invalid request body)",
+              "content": {}
+            },
+            "409": {
+              "description": "Provided email already exists",
+              "content": {}
+            }
+          }
+        }
+      },
+
+      "/water/update": {
+        "post": {
+          "tags": ["Water"],
+          "summary": "User registration",
+
+          "parameters": [ {
+            "id":"path",
+            "name":"id",
+            "required":"true",
+            "type":"string",
+            "description":"Water daily data id"
+        }],
+          "security": [{"Bearer": []}],
+
+            
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+
+
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/RegistrationRequest"}
+              }
+            }
+          },
+
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {"$ref": "#/components/schemas/RegistrationResponse"}
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request (invalid request body)",
+              "content": {}
+            },
+            "409": {
+              "description": "Provided email already exists",
+              "content": {}
+            }
+          }
+        }
+      },
+
+      "/water/waterrate": {
+        "post": {
+          "tags": ["Water"],
+          "summary": "User registration",
+
+          "parameters": [],
+          "security": [{"Bearer": []}],
+
+            
+          "requestBody": {
+            "description": "Registration's object",
+            "required": true,
+
+
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/RegistrationRequest"}
+              }
+            }
+          },
+
+          "responses": {
+            "201": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {"$ref": "#/components/schemas/RegistrationResponse"}
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request (invalid request body)",
+              "content": {}
+            },
+            "409": {
+              "description": "Provided email already exists",
+              "content": {}
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "RegistrationRequest": {
+          "type": "object",
+          "required": ["email", "password"],
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email"
+            },
+            "password": {
+              "type": "string",
+              "description": "User's password",
+              "example": "qwerty123"
+            }
+          }
+        },
+        "RegistrationResponse": {
+          "type": "object",
+          "properties": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "userId": {
+                "type": "number",
+                "description": "User's id",
+                "example": "32143232436545474"
+              }
+            }
+          }          
+        }
+
+
+      },
+      "securitySchemes": {
+        "Bearer": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  }
+  
