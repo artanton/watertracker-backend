@@ -7,6 +7,13 @@ import upload from "../middlewares/upload.js";
 
 const userSettingsRouter = express.Router();
 
+userSettingsRouter.get(
+  "/",
+  authenticate,
+  validateBody(userSettingsSchema),
+  userSettingsController.getUserSettings
+);
+
 userSettingsRouter.patch(
   "/",
   authenticate,

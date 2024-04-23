@@ -30,7 +30,7 @@ const register = async (req, res) => {
   };
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
-  
+
   res.status(201).json({
     email: newUser.email,
     name: newUser.name,
@@ -41,7 +41,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
- 
+
   if (!user) {
     throw HttpError(401, "Email or password invalid");
   }

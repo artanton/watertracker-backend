@@ -4,6 +4,12 @@ import { User } from "../models/user.js";
 import HttpError from "../helpers/HttpError.js";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 
+const getUserSettings = async (req, res) => {
+  const { _id, email, token, userName, avatarURL, gender, dailyNorma } =
+    req.user;
+  res.json({ _id, email, token, userName, avatarURL, gender, dailyNorma });
+};
+
 const updateUserSettings = async (req, res) => {
   const { _id } = req.user;
   const { email, userName, gender, dailyNorma, oldPassword, newPassword } =
@@ -34,4 +40,7 @@ const updateUserSettings = async (req, res) => {
   res.status(200).json(result);
 };
 
-export default { updateUserSettings: ctrlWrapper(updateUserSettings) };
+export default {
+  updateUserSettings: ctrlWrapper(updateUserSettings),
+  getUserSettings: ctrlWrapper(getUserSettings),
+};
