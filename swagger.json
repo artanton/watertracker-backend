@@ -182,7 +182,7 @@
         "/updateProfile": {
             "patch": {
                 "tags": [
-                    "updateProfile"
+                    "UpdateProfile"
                 ],
                 "summary": "User update",
                 "parameters": [],
@@ -192,7 +192,7 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "Registration's object",
+                    "description": "Update user object",
                     "required": true,
                     "content": {
                         "multipart/form-data": {
@@ -203,15 +203,17 @@
                                         "type": "string",
                                         "format": "binary",
                                         "description": "Image file to upload"
-                                    },
-                                    "userData": {
-                                        "$ref": "#/components/schemas/UserUpdateRequest",
-                                        "description": "User data in JSON format"
+                                    }}},
+                                   "application/json": {
+                                        
+                                            "$ref": "#/components/schemas/UserUpdateRequest"
+                                        
                                     }
-                                }
-                            }
-                        }
-                    }
+                                }}
+                               
+                            
+                        
+                    
                 },
                 "responses": {
                     "200": {
@@ -637,11 +639,7 @@
                         "format": "email",
                         "description": "Email address of the user."
                     }
-                },
-                "required": [
-                    "oldPassword",
-                    "newPassword"
-                ]
+                }
             },
             "UserUpdateResponse": {
                 "type": "object",
