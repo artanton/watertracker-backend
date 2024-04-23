@@ -18,8 +18,9 @@
     ],
     "servers": [
         {
-            "url": "http://localhost:3000"
-        }
+            "url": "https://project-codebusters-backend.onrender.com/api"
+        },
+        { "url": "http://localhost:3000" }
     ],
     "tags": [
         {
@@ -31,8 +32,8 @@
             "description": "Water record's collection endpoits"
         },
         {
-            "name": "userSettings",
-            "description": "User data"
+            "name": "UpdateProfile",
+            "description": "Water record's collection endpoits"
         }
     ],
     "paths": {
@@ -119,7 +120,7 @@
             }
         },
         "/auth/current": {
-            "post": {
+            "get": {
                 "tags": [
                     "Auth"
                 ],
@@ -167,7 +168,7 @@
                 ],
                 "requestBody": {},
                 "responses": {
-                    "200": {
+                    "204": {
                         "description": "Successful logout",
                         "content": {}
                     },
@@ -178,8 +179,8 @@
                 }
             }
         },
-        "/updateProfile/": {
-            "post": {
+        "/updateProfile": {
+            "patch": {
                 "tags": [
                     "updateProfile"
                 ],
@@ -203,10 +204,9 @@
                                         "format": "binary",
                                         "description": "Image file to upload"
                                     },
-                                    "application/json": {
-                                        "schema": {
-                                            "$ref": "#/components/schemas/UserUpdateRequest"
-                                        }
+                                    "userData": {
+                                        "$ref": "#/components/schemas/UserUpdateRequest",
+                                        "description": "User data in JSON format"
                                     }
                                 }
                             }
@@ -214,7 +214,7 @@
                     }
                 },
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Successful operation",
                         "content": {
                             "application/json": {
@@ -239,7 +239,7 @@
                 }
             }
         },
-        "/water/today": {
+        "/water/today/{_id}": {
             "get": {
                 "tags": [
                     "Water"
@@ -247,8 +247,8 @@
                 "summary": "Water data for today",
                 "parameters": [
                     {
-                        "id": "path",
-                        "name": "id",
+                        "in": "path",
+                        "name": "_id",
                         "required": "true",
                         "type": "string",
                         "description": "Water daily data id"
@@ -275,7 +275,7 @@
                         "description": "Not Found",
                         "content": {}
                     },
-                    "401:": {
+                    "401": {
                         "description": " Unauthorized",
                         "content": {}
                     }
@@ -319,7 +319,7 @@
                         "description": "Not Found",
                         "content": {}
                     },
-                    "401:": {
+                    "401": {
                         "description": " Unauthorized",
                         "content": {}
                     }
@@ -355,7 +355,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AddWaterResponse"
+                                    "$ref": "#/components/schemas/CreateWaterRecordResponse"
                                 }
                             }
                         }
@@ -374,14 +374,14 @@
                         "description": "Bad request (invalid request body)",
                         "content": {}
                     },
-                    "401:": {
+                    "401": {
                         "description": " Unauthorized",
                         "content": {}
                     }
                 }
             }
         },
-        "/water/update": {
+        "/water/update/{_id}": {
             "patch": {
                 "tags": [
                     "Water"
@@ -389,11 +389,11 @@
                 "summary": "Update Water note",
                 "parameters": [
                     {
-                        "id": "path",
-                        "name": "id",
-                        "required": "true",
+                        "in": "path",
+                        "name": "_id",
+                        "required": true,
                         "type": "string",
-                        "description": "Water Water Note id"
+                        "description": "Water Note id"
                     }
                 ],
                 "security": [
@@ -472,32 +472,30 @@
                             }
                         }
                     },
-                    "400": 
-                        {
-                            "description": "Bad request (invalid request body)",
-                            "content": {}
-                        },
-                        "401": {
-                            "description": "Unauthorized",
-                            "content": {}
-                        }
-                    
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
                 }
             }
         },
-        "/water/remove": {
-            "post": {
+        "/water/remove/{_id}": {
+            "delete": {
                 "tags": [
                     "Water"
                 ],
                 "summary": "Delete Water Note",
                 "parameters": [
                     {
-                        "id": "path",
-                        "name": "id",
-                        "required": "true",
+                        "in": "path",
+                        "name": "_id",
+                        "required": true,
                         "type": "string",
-                        "description": "Water Water Note id"
+                        "description": "Water Note id"
                     }
                 ],
                 "security": [
@@ -507,7 +505,7 @@
                 ],
                 "requestBody": {},
                 "responses": {
-                    "200": {
+                    "204": {
                         "description": "Delete success",
                         "content": {}
                     },
@@ -547,18 +545,14 @@
             "RegistrationResponse": {
                 "type": "object",
                 "properties": {
-                    "type": "object",
-                    "properties": {
-                        "email": {
-                            "type": "string",
-                            "description": "User's email",
-                            "format": "email"
-                        },
-                        "userId": {
-                            "type": "number",
-                            "description": "User's id",
-                            "example": "32143232436545474"
-                        }
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "Email address of the user."
+                    },
+                    "token": {
+                        "type": "string",
+                        "description": "JWT token for authentication."
                     }
                 }
             },
@@ -811,6 +805,74 @@
                     "waterDose": 200
                 }
             },
+            "CreateWaterRecordResponse": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the water record"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Date of the water record"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "description": "Owner of the water record"
+                    },
+                    "dailyNorma": {
+                        "type": "integer",
+                        "description": "Daily water consumption norm in milliliters"
+                    },
+                    "waterTotal": {
+                        "type": "integer",
+                        "description": "Total water consumption in milliliters"
+                    },
+                    "persantRate": {
+                        "type": "integer",
+                        "description": "Water consumption percentage rate"
+                    },
+                    "waterSavings": {
+                        "type": "integer",
+                        "description": "Amount of water savings in milliliters"
+                    },
+                    "WaterNotes": {
+                        "type": "array",
+                        "description": "Array of water dose notes",
+                        "items": [
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "createdDate": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Date and time when the water dose note was created"
+                                    },
+                                    "waterDose": {
+                                        "type": "integer",
+                                        "description": "Amount of water dose in milliliters"
+                                    },
+                                    "_id": {
+                                        "type": "string",
+                                        "description": "Unique identifier for the water dose note"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time when the water record was created"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time when the water record was last updated"
+                    }
+                }
+            },
             "AddWaterResponse": {
                 "type": "object",
                 "properties": {
@@ -846,29 +908,44 @@
                     "WaterNotes": {
                         "type": "array",
                         "description": "Array of water dose notes",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "createdDate": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "description": "Date and time when the water dose note was created"
-                                },
-                                "waterDose": {
-                                    "type": "integer",
-                                    "description": "Amount of water dose in milliliters"
-                                },
-                                "_id": {
-                                    "type": "string",
-                                    "description": "Unique identifier for the water dose note"
+                        "items": [
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "createdDate": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Date and time when the water dose note was created"
+                                    },
+                                    "waterDose": {
+                                        "type": "integer",
+                                        "description": "Amount of water dose in milliliters"
+                                    },
+                                    "_id": {
+                                        "type": "string",
+                                        "description": "Unique identifier for the water dose note"
+                                    }
                                 }
                             },
-                            "required": [
-                                "createdDate",
-                                "waterDose",
-                                "_id"
-                            ]
-                        }
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "createdDate": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Date and time when the water dose note was created"
+                                    },
+                                    "waterDose": {
+                                        "type": "integer",
+                                        "description": "Amount of water dose in milliliters"
+                                    },
+                                    "_id": {
+                                        "type": "string",
+                                        "description": "Unique identifier for the water dose note"
+                                    }
+                                }
+                            }
+                        ]
                     },
                     "createdAt": {
                         "type": "string",
@@ -896,8 +973,18 @@
                     }
                 },
                 "example": {
-                    "date": "2024-04-22T21:23:05.617Z",
+                    "createdDate": "2024-04-22T21:23:05.617Z",
                     "waterDose": 200
+                }
+            },
+            "DailyNormaRequest": {
+                "type": "object",
+                "properties": {
+                    "dailyNorma": {
+                        "type": "number",
+                        "minimum": 50,
+                        "description": "Daily water consumption norm in milliliters."
+                    }
                 }
             }
         },
