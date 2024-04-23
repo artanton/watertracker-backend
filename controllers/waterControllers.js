@@ -3,6 +3,7 @@ import HttpError from "../helpers/HttpError.js";
 
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import { getDaysOfMonth } from "../helpers/waterHelper.js";
+import { User } from "../models/user.js";
 
 const addWater = async (req, res) => {
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
@@ -209,9 +210,16 @@ const month = async (req, res) => {
 const dailyNorm = async (req, res) => {
   const { _id: owner } = req.user;
   const { dailyNorma: newDailyNorma } = req.body;
+
   if (!newDailyNorma) {
     throw HttpError(400, "Bad request (invalid request body)");
   }
+
+  const updateUser = await User.findByIdAndUpdate(
+    { _id: owner },
+    { $set: { dailyNorma: newDailyNorma } },
+    { new: true }
+  );
 
   const actualDate = new Date().toISOString().substring(0, 10);
 
