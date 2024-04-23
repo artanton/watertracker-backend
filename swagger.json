@@ -20,7 +20,9 @@
         {
             "url": "https://project-codebusters-backend.onrender.com/api"
         },
-        { "url": "http://localhost:3000" }
+        {
+            "url": "http://localhost:3000"
+        }
     ],
     "tags": [
         {
@@ -199,21 +201,44 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "image": {
+                                    "avatarURL": {
                                         "type": "string",
                                         "format": "binary",
-                                        "description": "Image file to upload"
-                                    }}},
-                                   "application/json": {
-                                        
-                                            "$ref": "#/components/schemas/UserUpdateRequest"
-                                        
+                                        "description": "Avatar image file. Supported formats: webp, jpg, jpeg, img."
+                                    },
+                                    "userName": {
+                                        "type": "string",
+                                        "description": "Username of the user."
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Man",
+                                            "Woman"
+                                        ],
+                                        "description": "Gender of the user."
+                                    },
+                                    "dailyNorm": {
+                                        "type": "number",
+                                        "description": "Daily norm of water consumption for the user."
+                                    },
+                                    "oldPassword": {
+                                        "type": "string",
+                                        "description": "Old password of the user."
+                                    },
+                                    "newPassword": {
+                                        "type": "string",
+                                        "description": "New password of the user."
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "description": "Email address of the user."
                                     }
-                                }}
-                               
-                            
-                        
-                    
+                                }
+                            }
+                        }
+                    }
                 },
                 "responses": {
                     "200": {
