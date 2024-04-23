@@ -66,23 +66,27 @@ const deleteWaterRecord = async (req, res) => {
   const { id } = req.params;
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
-  const actualDate = new Date().toISOString().substring(0, 10);
-  let toDayWaterData = await Water.findOne({ owner, date: actualDate });
-
+  let toDayWaterData = await Water.findOne({
+    owner,
+    "waterNotes._id": id,
+  });
   if (!toDayWaterData) {
-    throw HttpError(404, "Not found");
+    throw HttpError(404, "Not Found");
   }
 
   let waterRecord = toDayWaterData.waterNotes.find(
     (option) => option.id === id
   );
 
+  console.log(waterRecord);
   const { waterTotal } = toDayWaterData;
 
-  const deletedWaterDose = waterRecord.waterDose;
+  let deletedWaterDose = waterRecord.waterDose;
+
+  console.log(deletedWaterDose);
 
   toDayWaterData = await Water.updateOne(
-    { owner, date: actualDate },
+    { owner, "waterNotes._id": id },
 
     {
       $inc: { waterTotal: -deletedWaterDose, waterSavings: -1 },
@@ -102,10 +106,12 @@ const deleteWaterRecord = async (req, res) => {
 const updateWaterDose = async (req, res) => {
   const { id } = req.params;
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
-  const { waterDose: newWaterDose, createdDate } = req.body;
+  const { waterDose: newWaterDose, createdDate: newCreatedDate } = req.body;
 
-  const actualDate = new Date(createdDate).toISOString().substring(0, 10);
-  let toDayWaterData = await Water.findOne({ owner, date: actualDate });
+  let toDayWaterData = await Water.findOne({
+    owner,
+    "waterNotes._id": id,
+  });
   if (!toDayWaterData) {
     throw HttpError(404, "Not Found");
   }
@@ -114,13 +120,9 @@ const updateWaterDose = async (req, res) => {
     (option) => option.id === id
   );
 
-  if (!waterRecord) {
-    throw HttpError(404, "Water dose record Not Found");
-  }
   const { waterTotal } = toDayWaterData;
 
   const oldWaterDose = waterRecord.waterDose;
-  const newCreatedDate = new Date(createdDate).toISOString();
 
   const waterDoseShift = oldWaterDose - newWaterDose;
 
