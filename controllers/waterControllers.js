@@ -142,9 +142,9 @@ const updateWaterDose = async (req, res) => {
 
     { new: true }
   );
-  waterRecord = toDayWaterData.waterNotes.find((option) => option.id === id);
+ 
 
-  res.status(200).json(waterRecord);
+  res.status(200).json(toDayWaterData);
 };
 
 const month = async (req, res) => {
