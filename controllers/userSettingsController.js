@@ -17,7 +17,7 @@ const updateUserSettings = async (req, res) => {
 
   const passwordCompare = await bcrypt.compare(oldPassword, password);
   if (!passwordCompare) {
-    throw HttpError(401, "Outdated password is incorrect");
+    throw HttpError(400, "Outdated password is incorrect");
   }
   const newData = {};
   userName && (newData.userName = userName);
