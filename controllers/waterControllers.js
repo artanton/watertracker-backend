@@ -214,16 +214,18 @@ const dailyNorm = async (req, res) => {
 
   const toDayWaterData = await Water.findOne({ owner, date: actualDate });
 
-  if (!toDayWaterData) {
-    const userDailyNorma = await User.findByIdAndUpdate(
-      {_id: owner },
-      {
-        $set: {
-          dailyNorma: newDailyNorma,
-        },
+  const userDailyNorma = await User.findByIdAndUpdate(
+    {_id: owner },
+    {
+      $set: {
+        dailyNorma: newDailyNorma,
       },
-      { new: true }
-    );
+    },
+    { new: true }
+  );
+
+  if (!toDayWaterData) {
+    
     const result = await Water.create({
       owner,
       date: actualDate,
