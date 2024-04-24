@@ -11,9 +11,14 @@ const getUserSettings = async (req, res) => {
 };
 
 const updateUserSettings = async (req, res) => {
-  const { _id } = req.user;
+  const { _id, password } = req.user;
   const { email, userName, gender, dailyNorma, oldPassword, newPassword } =
     req.body;
+
+  const passwordCompare = await bcrypt.compare(oldPassword, password);
+  if (!passwordCompare) {
+    throw HttpError(401, "Old password is incorrect");
+  }
   const newData = {};
   userName && (newData.userName = userName);
   gender && (newData.gender = gender);
