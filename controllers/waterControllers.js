@@ -3,7 +3,7 @@ import HttpError from "../helpers/HttpError.js";
 
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import { getDaysOfMonth } from "../helpers/waterHelper.js";
-import { User } from "../models/user.js";
+
 
 const addWater = async (req, res) => {
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
@@ -79,12 +79,9 @@ const deleteWaterRecord = async (req, res) => {
     (option) => option.id === id
   );
 
-  console.log(waterRecord);
   const { waterTotal } = toDayWaterData;
 
   let deletedWaterDose = waterRecord.waterDose;
-
-  console.log(deletedWaterDose);
 
   toDayWaterData = await Water.updateOne(
     { owner, "waterNotes._id": id },
@@ -142,7 +139,6 @@ const updateWaterDose = async (req, res) => {
 
     { new: true }
   );
- 
 
   res.status(200).json(toDayWaterData);
 };
@@ -210,25 +206,15 @@ const month = async (req, res) => {
 const dailyNorm = async (req, res) => {
   const { _id: owner } = req.user;
   const { dailyNorma: newDailyNorma } = req.body;
+  const actualDate = new Date().toISOString().substring(0, 10);
 
   if (!newDailyNorma) {
     throw HttpError(400, "Bad request (invalid request body)");
   }
 
-  const updateUser = await User.findByIdAndUpdate(
-    { _id: owner },
-    { $set: { dailyNorma: newDailyNorma } },
-    { new: true }
-  );
-
-  const actualDate = new Date().toISOString().substring(0, 10);
-
   const toDayWaterData = await Water.findOne({ owner, date: actualDate });
-  if (!toDayWaterData) {
-    throw HttpError(404, "Not Found");
-  }
-  const { waterTotal } = toDayWaterData;
 
+ 
   if (!toDayWaterData) {
     const result = await Water.create({
       owner,
@@ -242,6 +228,8 @@ const dailyNorm = async (req, res) => {
 
     return res.status(201).json(result);
   } else {
+    const { waterTotal } = toDayWaterData;
+
     const waterRate = Math.round((waterTotal / newDailyNorma) * 100);
     const result = await Water.findOneAndUpdate(
       { owner, date: actualDate },
@@ -253,9 +241,6 @@ const dailyNorm = async (req, res) => {
       },
       { new: true }
     );
-    if (!result) {
-      throw HttpError(404, "Not Found");
-    }
 
     return res.json(result);
   }
