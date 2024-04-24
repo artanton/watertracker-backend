@@ -47,7 +47,7 @@ const userSchema = new Schema(
     },
     dailyNorma: {
       type: Number,
-      min: [50, "Daily norm value cannot be less than 0 ml"],
+      min: [1000, "Daily norm value cannot be less than 1000 ml"],
       max: [15000, "Daily norm value cannot be more than 15000 ml"],
       default: 2000,
     },

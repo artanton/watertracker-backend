@@ -15,7 +15,7 @@ const waterSchema = new Schema(
     },
     dailyNorma: {
       type: Number,
-      min: 50,
+      min: 1000,
       max: 15000,
       default: 2000,
     },
