@@ -1,9 +1,9 @@
 import { Water } from "../models/water.js";
+import { User } from "../models/user.js";
 import HttpError from "../helpers/HttpError.js";
 
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import { getDaysOfMonth } from "../helpers/waterHelper.js";
-
 
 const addWater = async (req, res) => {
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
@@ -214,8 +214,16 @@ const dailyNorm = async (req, res) => {
 
   const toDayWaterData = await Water.findOne({ owner, date: actualDate });
 
- 
   if (!toDayWaterData) {
+    const userDailyNorma = await User.findByIdAndUpdate(
+      { owner },
+      {
+        $set: {
+          dailyNorma: newDailyNorma,
+        },
+      },
+      { new: true }
+    );
     const result = await Water.create({
       owner,
       date: actualDate,
