@@ -216,7 +216,7 @@ const dailyNorm = async (req, res) => {
 
   if (!toDayWaterData) {
     const userDailyNorma = await User.findByIdAndUpdate(
-      { owner },
+      {_id: owner },
       {
         $set: {
           dailyNorma: newDailyNorma,
