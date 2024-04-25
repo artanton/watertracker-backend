@@ -9,7 +9,7 @@ const addWater = async (req, res) => {
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
   const { date, waterDose } = req.body;
-  const actualDate = new Date(date).substring(0, 10);
+  const actualDate = new Date(date).toISOString().substring(0, 10);
 
   const toDayWaterData = await Water.findOne({ owner, date: actualDate });
 
@@ -147,7 +147,7 @@ const month = async (req, res) => {
   const { _id: owner } = req.user;
   const { date } = req.query;
 
-  const searchedDate = new Date(date);
+  const searchedDate = new Date();
   const year = searchedDate.getFullYear();
   const monthNo = searchedDate.getMonth();
 
@@ -206,7 +206,7 @@ const month = async (req, res) => {
 const dailyNorm = async (req, res) => {
   const { _id: owner } = req.user;
   const { dailyNorma: newDailyNorma, date } = req.body;
-  const actualDate = new Date(date).substring(0, 10);
+  const actualDate =  new Date().toISOString().substring(0, 10);
 
   if (!newDailyNorma) {
     throw HttpError(400, "Bad request (invalid request body)");
