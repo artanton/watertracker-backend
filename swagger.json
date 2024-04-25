@@ -266,13 +266,20 @@
                 }
             }
         },
-        "/water/today/{_id}": {
+        "/water/today/": {
             "get": {
                 "tags": [
                     "Water"
                 ],
                 "summary": "Water data for today",
-                "parameters": [
+                "parameters": [{
+                    "in": "query",
+                    "name": "date",
+                    "required": "true",
+                    "type": "string",
+                    "description": "Random date of the target month",
+                    "example": "2024-04-11"
+                }
                    
                 ],
                 "security": [
