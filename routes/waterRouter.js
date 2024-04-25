@@ -9,7 +9,7 @@ const waterRouter = express.Router();
 
 waterRouter.use(authenticate);
 
-waterRouter.get("/today/:id", isValidId, waterController.today);
+waterRouter.get("/today",  waterController.today);
 
 waterRouter.get("/month", waterController.month);
 

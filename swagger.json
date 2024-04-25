@@ -273,13 +273,7 @@
                 ],
                 "summary": "Water data for today",
                 "parameters": [
-                    {
-                        "in": "path",
-                        "name": "_id",
-                        "required": "true",
-                        "type": "string",
-                        "description": "Water daily data id"
-                    }
+                   
                 ],
                 "security": [
                     {
