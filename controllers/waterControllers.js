@@ -52,12 +52,35 @@ const addWater = async (req, res) => {
   }
 };
 
+// const today = async (req, res) => {
+//   const { id } = req.params;
+//   const { _id: owner } = req.user;
+//   const result = await Water.findOne({ _id: id, owner });
+//   if (!result) {
+//     throw HttpError(404, `Not found`);
+//   }
+
+//   res.json(result);
+// };
+
 const today = async (req, res) => {
-  const { id } = req.params;
-  const { _id: owner } = req.user;
-  const result = await Water.findOne({ _id: id, owner });
+  // const { id } = req.params;
+  const { _id: owner, dailyNorma: userDailyNorma } = req.user;
+
+  const actualDate =  new Date().toISOString().substring(0, 10);
+  const result = await Water.findOne({date:actualDate , owner });
   if (!result) {
-    throw HttpError(404, `Not found`);
+    const result = await Water.create({
+      owner,
+      date: actualDate,
+      waterTotal: 0,
+      persantRate: 0,
+      dailyNorma: userDailyNorma,
+      waterSavings: 0,
+      waterNotes: [],
+    });
+
+    return res.status(201).json(result);
   }
 
   res.json(result);
