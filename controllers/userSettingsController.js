@@ -14,11 +14,13 @@ const updateUserSettings = async (req, res) => {
   const { _id, password } = req.user;
   const { email, userName, gender, dailyNorma, oldPassword, newPassword } =
     req.body;
-
-  const passwordCompare = await bcrypt.compare(oldPassword, password);
-  if (!passwordCompare) {
-    throw HttpError(400, "Outdated password is incorrect");
+  if (oldPassword) {
+    const passwordCompare = await bcrypt.compare(oldPassword, password);
+    if (!passwordCompare) {
+      throw HttpError(400, "Outdated password is incorrect");
+    }
   }
+
   const newData = {};
   userName && (newData.userName = userName);
   gender && (newData.gender = gender);
