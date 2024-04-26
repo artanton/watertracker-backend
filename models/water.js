@@ -19,10 +19,9 @@ const waterSchema = new Schema(
       max: 15000,
       default: 2000,
     },
-    waterTotal : {
-      type : Number,
+    waterTotal: {
+      type: Number,
       min: 0,
-      
     },
     persantRate: {
       type: Number,
@@ -30,27 +29,27 @@ const waterSchema = new Schema(
       default: 0,
     },
 
-     waterSavings: {
+    waterSavings: {
       type: Number,
-      min: 0, 
+      min: 0,
       default: 0,
-     } ,    
+    },
 
     waterNotes: {
       type: [
         {
           createdDate: {
             type: Date,
-            required: true,
+            required: [true, "createDate was not found"],
           },
           waterDose: {
             type: Number,
             min: [50, " min value is 50"],
             max: [5000, " max value is 5000"],
             required: true,
-            
           },
-        },{timestamps: true,}
+        },
+        { timestamps: true },
       ],
     },
   },
