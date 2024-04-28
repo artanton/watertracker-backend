@@ -6,7 +6,7 @@ export const waterSchema = Joi.object({
 });
 
 export const waterUpdateSchema = Joi.object({
-  createdDate: Joi.date().required().message("CreatedDate was not found"),
+  createdDate: Joi.date().required(),
   waterDose: Joi.number().min(50).max(5000).required(),
 });
 
