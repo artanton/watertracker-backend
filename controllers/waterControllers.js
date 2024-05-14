@@ -77,8 +77,8 @@ const today = async (req, res) => {
   const { date } = req.query;
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
-  const actualDate =  new Date(date).toISOString().substring(0, 10);
-  const result = await Water.findOne({date:actualDate , owner });
+  const actualDate = new Date(parseInt(date)).toISOString().substring(0, 10);
+  const result = await Water.findOne({ date: actualDate, owner });
   if (!result) {
     const result = await Water.create({
       owner,
@@ -239,7 +239,7 @@ const month = async (req, res) => {
 const dailyNorm = async (req, res) => {
   const { _id: owner } = req.user;
   const { dailyNorma: newDailyNorma, date } = req.body;
-  const actualDate =  new Date().toISOString().substring(0, 10);
+  const actualDate = new Date().toISOString().substring(0, 10);
 
   if (!newDailyNorma) {
     throw HttpError(400, "Bad request (invalid request body)");
@@ -248,7 +248,7 @@ const dailyNorm = async (req, res) => {
   const toDayWaterData = await Water.findOne({ owner, date: actualDate });
 
   const userDailyNorma = await User.findByIdAndUpdate(
-    {_id: owner },
+    { _id: owner },
     {
       $set: {
         dailyNorma: newDailyNorma,
@@ -258,7 +258,6 @@ const dailyNorm = async (req, res) => {
   );
 
   if (!toDayWaterData) {
-    
     const result = await Water.create({
       owner,
       date: actualDate,
