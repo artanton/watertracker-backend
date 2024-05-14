@@ -3,13 +3,17 @@ import waterController from "../controllers/waterControllers.js";
 import validateBody from "../helpers/validateBody.js";
 import { isValidId } from "../middlewares/isValidId.js";
 import { authenticate } from "../middlewares/authenticate.js";
-import { waterSchema, waterRateSchema, waterUpdateSchema } from "../schemas/waterSchemas.js";
+import {
+  waterSchema,
+  waterRateSchema,
+  waterUpdateSchema,
+} from "../schemas/waterSchemas.js";
 
 const waterRouter = express.Router();
 
 waterRouter.use(authenticate);
 
-waterRouter.get("/today",  waterController.today);
+waterRouter.get("/today", waterController.today);
 
 waterRouter.get("/month", waterController.month);
 
