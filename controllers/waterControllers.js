@@ -30,7 +30,7 @@ const addWater = async (req, res) => {
       waterNotes: [data],
     });
 
-    res.status(201).json(result);
+    res.status(201).json(result.waterNotes);
   } else {
     const { _id: id, waterTotal, waterSavings } = toDayWaterData;
 
@@ -48,7 +48,7 @@ const addWater = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json(result);
+    res.status(200).json(result.waterNotes);
   }
 };
 
