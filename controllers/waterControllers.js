@@ -28,6 +28,7 @@ const addWater = async (req, res) => {
       dailyNorma: userDailyNorma,
       waterSavings: 1,
       waterNotes: [data],
+      lastWaterDose: req.body,
     });
 
     res.status(201).json(result);
@@ -47,8 +48,9 @@ const addWater = async (req, res) => {
       },
       { new: true }
     );
+    const response = { ...result, lastWaterSaving: req.body };
 
-    res.status(200).json(result);
+    res.status(200).json(response);
   }
 };
 
