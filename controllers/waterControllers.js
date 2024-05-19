@@ -48,7 +48,7 @@ const addWater = async (req, res) => {
       },
       { new: true }
     );
-    const response = { ...result, lastWaterSaving: req.body };
+    const response = { ...result, lastWaterDose: req.body };
 
     res.status(200).json(response);
   }
