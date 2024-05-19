@@ -35,21 +35,7 @@ const addWater = async (req, res) => {
   } else {
     const { _id: id, waterTotal, waterSavings } = toDayWaterData;
 
-    // const result = await Water.findOneAndUpdate(
-    //   { _id: id },
-    //   {
-    //     $push: { waterNotes: { createdDate: date, waterDose } },
-    //     $inc: { waterTotal: +waterDose, waterSavings: 1 },
-    //     $set: {
-    //       persantRate: Math.round(
-    //         ((waterTotal + waterDose) / userDailyNorma) * 100
-    //       ),
-    //     },
-    //   },
-    //   { new: true }
-    // );
-
-    const updatedData = await Water.findOneAndUpdate(
+    const result = await Water.findOneAndUpdate(
       { _id: id },
       {
         $push: { waterNotes: { createdDate: date, waterDose } },
@@ -62,9 +48,6 @@ const addWater = async (req, res) => {
       },
       { new: true }
     );
-
-    const result = updatedData.toObject();
-    result.lastWaterDose = req.body;
 
     res.status(200).json(result);
   }
