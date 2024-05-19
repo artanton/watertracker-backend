@@ -95,7 +95,7 @@ const today = async (req, res) => {
   const { date } = req.query;
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
-  const actualDate = new Date(parseInt(date)).toISOString().substring(0, 10);
+  const actualDate = new Date().toISOString().substring(0, 10);
   const result = await Water.findOne({ date: actualDate, owner });
   if (!result) {
     const result = await Water.create({
