@@ -190,8 +190,25 @@ const updateWaterDose = async (req, res) => {
 
     { new: true }
   );
+  if (!toDayWaterData) {
+    throw HttpError(404, "Not Found after update");
+  }
 
-  res.status(200).json(toDayWaterData);
+  // Найдём обновлённую запись waterNote
+  const updatedWaterNote = toDayWaterData.waterNotes.find(
+    (note) => note.id === id
+  );
+
+  if (!updatedWaterNote) {
+    throw HttpError(404, "Updated water note not found");
+  }
+
+  const responseData = {
+    ...toDayWaterData.toObject(), // преобразуем toDayWaterData в обычный объект
+    updatedWaterNote,
+  };
+
+  res.status(200).json(responseData);
 };
 
 const month = async (req, res) => {
