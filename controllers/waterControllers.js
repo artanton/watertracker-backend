@@ -133,8 +133,7 @@ const deleteWaterRecord = async (req, res) => {
   const { waterTotal } = toDayWaterData;
 
   let deletedWaterDose = waterRecord.waterDose;
-
-  toDayWaterData = await Water.updateOne(
+  toDayWaterData = await Water.findOneAndUpdate(
     { owner, "waterNotes._id": id },
 
     {
@@ -149,7 +148,20 @@ const deleteWaterRecord = async (req, res) => {
     { new: true }
   );
 
-  return res.json({ message: "Delete success", id: id });
+  // let updatedWaterData = await Water.findOne({
+  //   owner,
+  //   "waterNotes._id": id,
+  // });
+  console.log("toDayWaterData", toDayWaterData);
+  const response = {
+    message: "Delete success",
+    id,
+    waterTotal: toDayWaterData.waterTotal,
+    persantRate: toDayWaterData.persantRate,
+    waterSavings: toDayWaterData.waterSavings,
+  };
+
+  return res.json(response);
 };
 
 const updateWaterDose = async (req, res) => {
