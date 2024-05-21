@@ -149,7 +149,7 @@ const deleteWaterRecord = async (req, res) => {
     { new: true }
   );
 
-  return res.json({ message: "Delete success" });
+  return res.json({ message: "Delete success", id: id });
 };
 
 const updateWaterDose = async (req, res) => {
