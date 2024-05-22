@@ -152,7 +152,6 @@ const deleteWaterRecord = async (req, res) => {
   //   owner,
   //   "waterNotes._id": id,
   // });
-  console.log("toDayWaterData", toDayWaterData);
   const response = {
     message: "Delete success",
     id,
@@ -227,7 +226,7 @@ const month = async (req, res) => {
   const { _id: owner } = req.user;
   const { date } = req.query;
 
-  const searchedDate = new Date();
+  const searchedDate = new Date(parseInt(date));
   const year = searchedDate.getFullYear();
   const monthNo = searchedDate.getMonth();
 
