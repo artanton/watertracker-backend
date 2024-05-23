@@ -9,8 +9,10 @@ const addWater = async (req, res) => {
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
   const { date, waterDose } = req.body;
-  const actualDate = new Date().toISOString().substring(0, 10);
+  const searchedDate = new Date(date);
 
+  const actualDate = searchedDate.toISOString().substring(0, 10);
+  // const actualDate = new Date(parseInt(date)).toISOString().substring(0, 10);
   const toDayWaterData = await Water.findOne({ owner, date: actualDate });
 
   if (!toDayWaterData) {
@@ -65,7 +67,6 @@ const addWater = async (req, res) => {
 
     const result = updatedData.toObject();
     result.lastWaterDose = result.waterNotes[result.waterNotes.length - 1];
-
     res.status(200).json(result);
   }
 };
