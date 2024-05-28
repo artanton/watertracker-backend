@@ -9,9 +9,11 @@ const addWater = async (req, res) => {
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
   const { date, waterDose } = req.body;
-  const searchedDate = new Date(date);
+  // const searchedDate = new Date(date.toString());
+console.log(date);
 
-  const actualDate = searchedDate.toISOString().substring(0, 10);
+  const actualDate = date.toString().substring(0, 10);
+  console.log(actualDate);
   // const actualDate = new Date(parseInt(date)).toISOString().substring(0, 10);
   const toDayWaterData = await Water.findOne({ owner, date: actualDate });
 
