@@ -9,12 +9,9 @@ const addWater = async (req, res) => {
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
   const { date, waterDose } = req.body;
-  // const searchedDate = new Date(date.toString());
-
 
   const actualDate = date.toString().substring(0, 10);
-  console.log(date);
-  // const actualDate = new Date(parseInt(date)).toISOString().substring(0, 10);
+
   const toDayWaterData = await Water.findOne({ owner, date: actualDate });
 
   if (!toDayWaterData) {
@@ -22,8 +19,7 @@ const addWater = async (req, res) => {
       createdDate: date,
       waterDose,
     };
-    console.log(data.date);
-console.log(typeof(data.date));
+
     const waterRate = Math.round((waterDose / userDailyNorma) * 100);
 
     const result = await Water.create({
@@ -41,21 +37,6 @@ console.log(typeof(data.date));
   } else {
     const { _id: id, waterTotal, waterSavings } = toDayWaterData;
 
-    // const result = await Water.findOneAndUpdate(
-    //   { _id: id },
-    //   {
-    //     $push: { waterNotes: { createdDate: date, waterDose } },
-    //     $inc: { waterTotal: +waterDose, waterSavings: 1 },
-    //     $set: {
-    //       persantRate: Math.round(
-    //         ((waterTotal + waterDose) / userDailyNorma) * 100
-    //       ),
-    //     },
-    //   },
-    //   { new: true }
-    // );
-console.log(date);
-console.log(typeof(date));
     const updatedData = await Water.findOneAndUpdate(
       { _id: id },
       {
@@ -75,27 +56,6 @@ console.log(typeof(date));
     res.status(200).json(result);
   }
 };
-
-// const today = async (req, res) => {
-//   const { id } = req.params;
-//   const { _id: owner } = req.user;
-//   const result = await Water.findOne({ _id: id, owner });
-//   if (!result) {
-//     const result = await Water.create({
-//       owner,
-//       date: actualDate,
-//       waterTotal: 0,
-//       persantRate: 0,
-//       dailyNorma: userDailyNorma,
-//       waterSavings: 0,
-//       waterNotes: [],
-//     });
-
-//     return res.status(201).json(result);
-//   }
-
-//   res.json(result);
-// };
 
 const today = async (req, res) => {
   const { date } = req.query;
@@ -155,10 +115,6 @@ const deleteWaterRecord = async (req, res) => {
     { new: true }
   );
 
-  // let updatedWaterData = await Water.findOne({
-  //   owner,
-  //   "waterNotes._id": id,
-  // });
   const response = {
     message: "Delete success",
     id,
@@ -212,7 +168,6 @@ const updateWaterDose = async (req, res) => {
     throw HttpError(404, "Not Found after update");
   }
 
-  // Найдём обновлённую запись waterNote
   const updatedWaterNote = toDayWaterData.waterNotes.find(
     (note) => note.id === id
   );
@@ -222,7 +177,7 @@ const updateWaterDose = async (req, res) => {
   }
 
   const responseData = {
-    ...toDayWaterData.toObject(), // преобразуем toDayWaterData в обычный объект
+    ...toDayWaterData.toObject(),
     updatedWaterNote,
   };
 
