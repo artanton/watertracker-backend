@@ -10,10 +10,10 @@ const addWater = async (req, res) => {
 
   const { date, waterDose } = req.body;
   // const searchedDate = new Date(date.toString());
-console.log(date);
+
 
   const actualDate = date.toString().substring(0, 10);
-  console.log(actualDate);
+  console.log(date);
   // const actualDate = new Date(parseInt(date)).toISOString().substring(0, 10);
   const toDayWaterData = await Water.findOne({ owner, date: actualDate });
 
@@ -22,6 +22,8 @@ console.log(date);
       createdDate: date,
       waterDose,
     };
+    console.log(data.date);
+console.log(typeof(data.date));
     const waterRate = Math.round((waterDose / userDailyNorma) * 100);
 
     const result = await Water.create({
@@ -52,7 +54,8 @@ console.log(date);
     //   },
     //   { new: true }
     // );
-
+console.log(date);
+console.log(typeof(date));
     const updatedData = await Water.findOneAndUpdate(
       { _id: id },
       {
@@ -98,7 +101,8 @@ const today = async (req, res) => {
   const { date } = req.query;
   const { _id: owner, dailyNorma: userDailyNorma } = req.user;
 
-  const actualDate = new Date().toISOString().substring(0, 10);
+  const actualDate = new Date(date).toISOString().substring(0, 10);
+  console.log(actualDate);
   const result = await Water.findOne({ date: actualDate, owner });
   if (!result) {
     const result = await Water.create({

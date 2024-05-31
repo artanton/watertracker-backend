@@ -39,7 +39,7 @@ const waterSchema = new Schema(
       type: [
         {
           createdDate: {
-            type: Date,
+            type: String,
             required: [true, "createDate was not found"],
           },
           waterDose: {
