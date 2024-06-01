@@ -189,24 +189,22 @@ const month = async (req, res) => {
   const { date } = req.query;
   const searchedDate = new Date(date);
 
-  const year = searchedDate.getFullYear();
-  const monthNo = searchedDate.getMonth();
+  const year = searchedDate.getFullYear(); // Number
+  const monthNo = searchedDate.getMonth(); // Number
 
-  const startOfMonth = new Date(
-    searchedDate.getFullYear(),
-    searchedDate.getMonth(),
-    2
-  ).toISOString();
-  const endOfMonth = new Date(
-    searchedDate.getFullYear(),
-    searchedDate.getMonth() + 1,
-    2
-  ).toISOString();
+  const startOfMonth = new Date(Date.UTC(year, monthNo, 0)).toISOString();
+
+  const endOfMonth = new Date(Date.UTC(year, monthNo + 1, 0)).toISOString();
+
+  console.log(startOfMonth);
+  console.log(endOfMonth);
 
   const rawData = await Water.find({
     owner,
     date: { $gte: startOfMonth, $lte: endOfMonth },
   });
+
+  console.log(rawData);
   if (!rawData) {
     throw HttpError(404, "Not Found");
   }
