@@ -187,8 +187,8 @@ const updateWaterDose = async (req, res) => {
 const month = async (req, res) => {
   const { _id: owner } = req.user;
   const { date } = req.query;
+  const searchedDate = new Date(date);
 
-  const searchedDate = new Date(parseInt(date));
   const year = searchedDate.getFullYear();
   const monthNo = searchedDate.getMonth();
 
