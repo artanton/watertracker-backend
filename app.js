@@ -1,6 +1,6 @@
 import express from "express";
 import swaggerUi from "swagger-ui-express"
-import swaggerDocument from "./swagger.json" assert { type: 'json' };
+import swaggerDocument from "./swagger.json" with { type: 'json' };
 
 import morgan from "morgan";
 import cors from "cors";
@@ -10,6 +10,8 @@ import dotenv from "dotenv";
 import waterRouter from "./routes/waterRouter.js";
 import authRouter from "./routes/authRouter.js";
 import userSettingsRouter from "./routes/userSettingsRouter.js";
+
+
 dotenv.config();
 export const app = express();
 
@@ -46,3 +48,4 @@ mongoose
     console.log(error.message);
     process.exit(1);
   });
+ 
