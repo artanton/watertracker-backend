@@ -57,7 +57,6 @@ Once the backend is running, you can view the API documentation at:
 
 ## API Endpoints
 
-## API Endpoints  
 
 ### **Authentication**  
 
