@@ -18,7 +18,7 @@
     ],
     "servers": [
         {
-            "url": "https://project-codebusters-backend-3x2e.onrender.com/api"
+            "url": "https://watertracker-backend-rsfd.onrender.com/api"
         },
         {
             "url": "http://localhost:3000"
