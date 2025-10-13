@@ -37,7 +37,7 @@ npm install
 
 3. Create a .env file in the backend directory and configure it as follows:
 ```
-PORT=3000
+PORT=4000
 MONGO_URI=your-mongodb-connection-string
 JWT_SECRET=your-secret-key
 CLOUDINARY_CLOUD_NAME=your-cloudinary-name
@@ -47,7 +47,7 @@ ACCESS_TOKEN_EXPIRES=1h
 ```
 4. Start the server:
 ```npm run dev```
-The server will run on [http://localhost:3000](http://localhost:3000)
+The server will run on [http://localhost:4000](http://localhost:4000)
 
 ## API Documentation
 

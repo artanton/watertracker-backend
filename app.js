@@ -1,4 +1,6 @@
 import express from "express";
+import session from "express-session";
+import passport from "passport";
 import swaggerUi from "swagger-ui-express"
 import swaggerDocument from "./swagger.json" with { type: 'json' };
 
@@ -18,6 +20,9 @@ export const app = express();
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
+app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/auth", authRouter);
 
@@ -36,7 +41,7 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-const { DB_HOST, PORT = 3000 } = process.env;
+const { DB_HOST, PORT = 4000 } = process.env;
 
 mongoose
   .connect(DB_HOST)

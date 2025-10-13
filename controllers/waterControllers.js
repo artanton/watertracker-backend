@@ -196,15 +196,11 @@ const month = async (req, res) => {
 
   const endOfMonth = new Date(Date.UTC(year, monthNo + 1, 0)).toISOString();
 
-  console.log(startOfMonth);
-  console.log(endOfMonth);
-
-  const rawData = await Water.find({
+   const rawData = await Water.find({
     owner,
     date: { $gte: startOfMonth, $lte: endOfMonth },
   });
 
-  console.log(rawData);
   if (!rawData) {
     throw HttpError(404, "Not Found");
   }
