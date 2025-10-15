@@ -1,75 +1,56 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-
-import { User } from "../models/user.js";
-import HttpError from "../helpers/HttpError.js";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
+import authService from "../services/authService.js";
+const REDIRECT_URL = process.env.REDIRECT_URL || "http://localhost:3000";
 
-dotenv.config();
-const { SECRET_KEY } = process.env;
+const googleAuth = async (req, res) => {
+  const profile = req.user;
+  const { token } = await authService.handleGoogleUser(profile);
+  res.redirect(`${REDIRECT_URL}/signup/?token=${token}`);
+};
+
+
 
 const register = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
-
-  if (user) {
-    throw HttpError(409, "Email already in use");
-  }
-
-  const hashPassword = await bcrypt.hash(password, 10);
-
-  const newUser = await User.create({
-    ...req.body,
-    password: hashPassword,
-    // token,
-  });
-
-  const payload = {
-    id: newUser._id,
-  };
-
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
-  await User.findByIdAndUpdate(newUser._id, { token });
-  res.status(201).json({
-    email: newUser.email,
-    name: newUser.name,
-    token,
-  });
+  const result = await authService.registerUser(email, password, req.body);
+  res.status(201).json(result);
 };
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    throw HttpError(401, "Email or password invalid");
-  }
-  const passwordCompare = await bcrypt.compare(password, user.password);
-  if (!passwordCompare) {
-    throw HttpError(401, "Email or password invalid");
-  }
-  const payload = {
-    id: user._id,
-  };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
-  await User.findByIdAndUpdate(user._id, { token });
-  res.json({
-    token,
-  });
+  const result = await authService.loginUser(email, password);
+  res.json(result);
 };
 
 const getCurrent = async (req, res) => {
-  const { _id, email, token, userName, avatarURL, gender, dailyNorma } =
-    req.user;
+  const { _id, email, token, userName, avatarURL, gender, dailyNorma } = req.user;
   res.json({ _id, email, token, userName, avatarURL, gender, dailyNorma });
 };
 
 const logout = async (req, res) => {
   const { _id } = req.user;
-  await User.findByIdAndUpdate(_id, { token: "" });
-
+  await authService.logoutUser(_id);
   res.json({ message: "Logout success" });
+};
+
+const refreshToken = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    throw HttpError(401, "Not authorized");
+  }
+  const refreshedUser = await authService.tokenRefresh(refreshToken);
+
+  res.cookie("refreshToken", refreshedUser.refreshToken, {
+    httpOnly: true,
+    secure: false,
+    path: "/",
+  });
+
+  res.status(200).json({
+    // user: refreshedUser.user,
+    accessToken: refreshedUser.accessToken,
+  });
 };
 
 export default {
@@ -77,4 +58,6 @@ export default {
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
+  googleAuth: ctrlWrapper(googleAuth),
+  refreshToken: ctrlWrapper(refreshToken),
 };
