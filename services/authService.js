@@ -24,7 +24,6 @@ const { SECRET_KEY } = process.env;
 //   try {
 //     const {id}= jwt.verify(token, JWT_REFRESH_SECRET);
 //   // const payload = jwt.decode(token);
- 
 
 //   const userToUpdate = await User.findOne({ _id:id });
 //   if(!userToUpdate){
@@ -48,7 +47,7 @@ const { SECRET_KEY } = process.env;
 //     { _id: id },
 //     { refreshToken: refreshedTokens.hashRefreshToken }
 //   );
-  
+
 //   return {
 //     user: {
 //       email: updatedUser.email,
@@ -59,40 +58,44 @@ const { SECRET_KEY } = process.env;
 //     accessToken: refreshedTokens.accessToken,
 //     refreshToken: refreshedTokens.refreshToken,
 //   };
-    
+
 //   } catch (error) {
 //    throw HttpError(401,error.message);
 //   }
-  
+
 // };
 
 const handleGoogleUser = async (profile) => {
-     
-const email = profile.emails[0].value;
-const hashPassword = await bcrypt.hash(profile.id, 10);
-  
- let user = await User.findOne({ email });
- 
+  const email = profile.emails[0].value;
+  const hashPassword = await bcrypt.hash(profile.id, 10);
 
-  if (!user) {
-    user = await User.create({
-      email,
-      userName: profile.displayName,
-      password: hashPassword,
-      avatarURL: profile.photos[0].value,
-    });
-}
+  let user = await User.findOne({ email });
 
-const payload = { id: user._id } ;
-const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+  try {
+    if (!user) {
+      user = await User.create({
+        email,
+        userName: profile.displayName,
+        password: hashPassword,
+        avatarURL: profile.photos[0].value,
+      });
+    }
+  } catch (err) {
+    if (err.code === 11000) {
+      user = await User.findOne({ email }); // already created by another request
+    } else {
+      throw err;
+    }
+  }
 
+  const payload = { id: user._id.toString() };
 
-await User.findByIdAndUpdate(user._id, { token });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+
+  await User.findByIdAndUpdate(user._id, { token });
 
   return { token };
 };
-
-
 
 const registerUser = async (email, password, body) => {
   const existingUser = await User.findOne({ email });
@@ -122,13 +125,13 @@ const loginUser = async (email, password) => {
   const isPasswordValid = bcrypt.compare(password, user.password);
   if (!isPasswordValid) throw HttpError(401, "Email or password invalid");
 
-  const payload = { id: user._id };
-//   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+  const payload = { id: user._id.toString() };
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
 
-const tokens = await generateTokens(payload);
-  await User.findByIdAndUpdate(user._id, { token: tokens.accessToken, refreshToken: tokens.hashRefreshToken });
+  // const tokens = await generateTokens(payload);
+  //   await User.findByIdAndUpdate(user._id, { token: tokens.accessToken, refreshToken: tokens.hashRefreshToken });
 
-  return { token: tokens.accessToken, refreshToken: tokens.refreshToken };
+  return { token };
 };
 
 const logoutUser = async (id) => {

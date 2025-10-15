@@ -4,11 +4,16 @@ const REDIRECT_URL = process.env.REDIRECT_URL || "http://localhost:3000";
 
 const googleAuth = async (req, res) => {
   const profile = req.user;
+  if (!profile) {
+    throw HttpError(401, "Not authorized");
+  }
   const { token } = await authService.handleGoogleUser(profile);
+  if (!token) {
+    throw HttpError(401, "Not authorized");
+  }
+
   res.redirect(`${REDIRECT_URL}/signup/?token=${token}`);
 };
-
-
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -19,11 +24,12 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   const result = await authService.loginUser(email, password);
-  res.json(result);
+  res.json(result.token);
 };
 
 const getCurrent = async (req, res) => {
-  const { _id, email, token, userName, avatarURL, gender, dailyNorma } = req.user;
+  const { _id, email, token, userName, avatarURL, gender, dailyNorma } =
+    req.user;
   res.json({ _id, email, token, userName, avatarURL, gender, dailyNorma });
 };
 
