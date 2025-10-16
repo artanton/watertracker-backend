@@ -10,7 +10,7 @@ const { GOOGLE_CLIENTID, GOOGLE_SECRET, CALLBACK_URL } = process.env;
 passport.use( new GoogleStrategy({
     clientID: GOOGLE_CLIENTID,
     clientSecret: GOOGLE_SECRET,
-    callbackURL: `${CALLBACK_URL}/auth/google/callback`,
+    callbackURL: `${CALLBACK_URL}/api/auth/google/callback`,
     scope:['profile','email', 'openid'],
     acesstype: 'offline'
 
