@@ -27,7 +27,7 @@ authRouter.get("/google", passport.authenticate('google'));
 authRouter.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
-  authControllers.googleAuth // ← this will handle token + redirect
+  authControllers.googleAuth
 );
 
 // authRouter.get(
