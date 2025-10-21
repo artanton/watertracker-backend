@@ -113,7 +113,7 @@ const registerUser = async (email, password, body) => {
 
   return {
     email: newUser.email,
-    name: newUser.name,
+    // name: newUser.name,
     token,
   };
 };
@@ -128,7 +128,7 @@ const loginUser = async (email, password) => {
   const payload = { id: user._id.toString() };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
   const updatedUser = await User.findByIdAndUpdate(user._id, { token });
-  console.log( updatedUser);
+  // console.log( updatedUser);
   // const tokens = await generateTokens(payload);
   //   await User.findByIdAndUpdate(user._id, { token: tokens.accessToken, refreshToken: tokens.hashRefreshToken });
 
