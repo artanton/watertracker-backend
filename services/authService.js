@@ -82,7 +82,7 @@ const handleGoogleUser = async (profile) => {
     }
   } catch (err) {
     if (err.code === 11000) {
-      user = await User.findOne({ email }); // already created by another request
+      user = await User.findOne({ email }); 
     } else {
       throw err;
     }
@@ -113,7 +113,6 @@ const registerUser = async (email, password, body) => {
 
   return {
     email: newUser.email,
-    // name: newUser.name,
     token,
   };
 };
@@ -128,7 +127,6 @@ const loginUser = async (email, password) => {
   const payload = { id: user._id.toString() };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
   const updatedUser = await User.findByIdAndUpdate(user._id, { token });
-  // console.log( updatedUser);
   // const tokens = await generateTokens(payload);
   //   await User.findByIdAndUpdate(user._id, { token: tokens.accessToken, refreshToken: tokens.hashRefreshToken });
 

@@ -3,16 +3,12 @@ import authService from "../services/authService.js";
 const REDIRECT_URL = process.env.REDIRECT_URL || "http://localhost:3000";
 
 const googleAuth = async (req, res) => {
-  const profile = req.user;
-  if (!profile) {
-    throw HttpError(401, "Not authorized");
-  }
-  const { token } = await authService.handleGoogleUser(profile);
+  const token = req.user;
   if (!token) {
     throw HttpError(401, "Not authorized");
   }
 
-  res.redirect(`${REDIRECT_URL}/signup/?token=${token}`);
+  res.redirect(`${REDIRECT_URL}/signup/?token=${token.token}`);
 };
 
 const register = async (req, res) => {

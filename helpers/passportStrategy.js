@@ -14,13 +14,13 @@ passport.use(
       clientSecret: GOOGLE_SECRET,
       callbackURL: `${CALLBACK_URL}/api/auth/google/callback`,
       scope: ["profile", "email", "openid"],
-      acesstype: "offline",
+      acсesstype: "offline",
     },
 
     async (accessToken, refreshToken, profile, done) => {
-      authService.handleGoogleUser(profile);
+      const token = await authService.handleGoogleUser(profile);
       // Here you can save/find user in DB if needed
-      return done(null, profile);
+        return done(null, token);
     }
   )
 );
