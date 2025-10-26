@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { emailRegexp, userNameRegexp } from "../helpers/validators.js";
+import { emailRegexp } from "../helpers/validators.js";
 
 export const avatarSchema = Joi.object({
   avatarURL: Joi.string().uri(),
@@ -26,10 +26,6 @@ export const loginSchema = Joi.object({
 export const userSettingsSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp),
   userName: Joi.string()
-    .regex(userNameRegexp)
-    .message(
-      "User name can contain only alphabet characters and numbers without punctuation"
-    )
     .max(64)
     .message("User name should not exceed 64 characters"),
   gender: Joi.string().valid("Man", "Woman", null).messages({

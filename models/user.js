@@ -14,10 +14,6 @@ const userSchema = new Schema(
     },
     userName: {
       type: String,
-      match: [
-        userNameRegexp,
-        "User name can contain only alphabet characters and numbers without spaces or punctuation",
-      ],
       maxlength: [64, "User name should not exceed 64 characters"],
       default: null,
     },
