@@ -8,7 +8,7 @@ const googleAuth = async (req, res) => {
     throw HttpError(401, "Not authorized");
   }
 
-  res.redirect(`${REDIRECT_URL}/signup/?token=${token.token}`);
+  res.redirect(`${REDIRECT_URL}/?token=${token.token}`);
 };
 
 const register = async (req, res) => {
